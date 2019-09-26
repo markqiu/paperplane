@@ -1,0 +1,722 @@
+[[package]]
+category = "main"
+description = "Fast ASN.1 parser and serializer with definitions for private keys, public keys, certificates, CRL, OCSP, CMS, PKCS#3, PKCS#7, PKCS#8, PKCS#12, PKCS#5, X.509 and TSP"
+name = "asn1crypto"
+optional = false
+python-versions = "*"
+version = "0.24.0"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Atomic file writes."
+name = "atomicwrites"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "1.3.0"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Classes Without Boilerplate"
+name = "attrs"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "19.1.0"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "Foreign Function Interface for Python calling C code."
+name = "cffi"
+optional = false
+python-versions = "*"
+version = "1.12.3"
+
+[package.dependencies]
+pycparser = "*"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "Composable command line interface toolkit"
+name = "click"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "7.0"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Cross-platform colored terminal text."
+marker = "sys_platform == \"win32\""
+name = "colorama"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "0.4.1"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
+name = "cryptography"
+optional = false
+python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
+version = "2.7"
+
+[package.dependencies]
+asn1crypto = ">=0.21.0"
+cffi = ">=1.8,<1.11.3 || >1.11.3"
+six = ">=1.4.1"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
+name = "fastapi"
+optional = false
+python-versions = ">=3.6"
+version = "0.38.1"
+
+[package.dependencies]
+pydantic = "0.32.2"
+starlette = ">=0.11.1,<=0.12.8"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "An HTML Minifier"
+name = "htmlmin"
+optional = false
+python-versions = "*"
+version = "0.1.12"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Read metadata from Python packages"
+marker = "python_version < \"3.8\""
+name = "importlib-metadata"
+optional = false
+python-versions = ">=2.7,!=3.0,!=3.1,!=3.2,!=3.3"
+version = "0.23"
+
+[package.dependencies]
+zipp = ">=0.5"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "A small but fast and easy to use stand-alone template engine written in pure python."
+name = "jinja2"
+optional = false
+python-versions = "*"
+version = "2.10.1"
+
+[package.dependencies]
+MarkupSafe = ">=0.23"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "JavaScript minifier."
+name = "jsmin"
+optional = false
+python-versions = "*"
+version = "2.2.2"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Python LiveReload is an awesome tool for web developers"
+name = "livereload"
+optional = false
+python-versions = "*"
+version = "2.6.1"
+
+[package.dependencies]
+six = "*"
+tornado = "*"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Python implementation of Markdown."
+name = "markdown"
+optional = false
+python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*"
+version = "3.1.1"
+
+[package.dependencies]
+setuptools = ">=36"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Safely add untrusted strings to HTML/XML markup."
+name = "markupsafe"
+optional = false
+python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
+version = "1.1.1"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Project documentation with Markdown."
+name = "mkdocs"
+optional = false
+python-versions = ">=2.7.9,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
+version = "1.0.4"
+
+[package.dependencies]
+Jinja2 = ">=2.7.1"
+Markdown = ">=2.3.1"
+PyYAML = ">=3.10"
+click = ">=3.3"
+livereload = ">=2.5.1"
+tornado = ">=5.0"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "A Material Design theme for MkDocs"
+name = "mkdocs-material"
+optional = false
+python-versions = "*"
+version = "4.4.2"
+
+[package.dependencies]
+Pygments = ">=2.2"
+mkdocs = ">=1"
+mkdocs-minify-plugin = ">=0.2"
+pymdown-extensions = ">=4.11"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "An MkDocs plugin to minify HTML and/or JS files prior to being written to disk"
+name = "mkdocs-minify-plugin"
+optional = false
+python-versions = ">=2.7"
+version = "0.2.1"
+
+[package.dependencies]
+htmlmin = ">=0.1.4"
+jsmin = ">=2.2.2"
+mkdocs = ">=1.0.4"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Fake pymongo stub for testing simple MongoDB-dependent code"
+name = "mongomock"
+optional = false
+python-versions = "*"
+version = "3.18.0"
+
+[package.dependencies]
+sentinels = "*"
+six = "*"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "More routines for operating on iterables, beyond itertools"
+name = "more-itertools"
+optional = false
+python-versions = ">=3.4"
+version = "7.2.0"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "NumPy is the fundamental package for array computing with Python."
+name = "numpy"
+optional = false
+python-versions = ">=3.5"
+version = "1.17.2"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Core utilities for Python packages"
+name = "packaging"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "19.2"
+
+[package.dependencies]
+pyparsing = ">=2.0.2"
+six = "*"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "Powerful data structures for data analysis, time series, and statistics"
+name = "pandas"
+optional = false
+python-versions = ">=3.5.3"
+version = "0.25.1"
+
+[package.dependencies]
+numpy = ">=1.13.3"
+python-dateutil = ">=2.6.1"
+pytz = ">=2017.2"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Backport of PEP 562."
+name = "pep562"
+optional = false
+python-versions = "*"
+version = "1.0"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "plugin and hook calling mechanisms for python"
+name = "pluggy"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "0.13.0"
+
+[package.dependencies]
+[package.dependencies.importlib-metadata]
+python = "<3.8"
+version = ">=0.12"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "library with cross-python path, ini-parsing, io, code, log facilities"
+name = "py"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "1.8.0"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "C parser in Python"
+name = "pycparser"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "2.19"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "Data validation and settings management using python 3.6 type hinting"
+name = "pydantic"
+optional = false
+python-versions = ">=3.6"
+version = "0.32.2"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Pygments is a syntax highlighting package written in Python."
+name = "pygments"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+version = "2.4.2"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Extension pack for Python Markdown."
+name = "pymdown-extensions"
+optional = false
+python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*"
+version = "6.1"
+
+[package.dependencies]
+Markdown = ">=3.0.1"
+pep562 = "*"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Python driver for MongoDB <http://www.mongodb.org>"
+name = "pymongo"
+optional = false
+python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
+version = "3.9.0"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Python parsing module"
+name = "pyparsing"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
+version = "2.4.2"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "A Python Interface to TDX protocol"
+name = "pytdx"
+optional = false
+python-versions = "*"
+version = "1.72"
+
+[package.dependencies]
+click = "*"
+cryptography = "*"
+pandas = "*"
+six = "*"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "pytest: simple powerful testing with Python"
+name = "pytest"
+optional = false
+python-versions = ">=3.5"
+version = "5.1.3"
+
+[package.dependencies]
+atomicwrites = ">=1.0"
+attrs = ">=17.4.0"
+colorama = "*"
+more-itertools = ">=4.0.0"
+packaging = "*"
+pluggy = ">=0.12,<1.0"
+py = ">=1.5.0"
+wcwidth = "*"
+
+[package.dependencies.importlib-metadata]
+python = "<3.8"
+version = ">=0.12"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "pytest plugin for MongoDB fixtures"
+name = "pytest-mongodb"
+optional = false
+python-versions = "*"
+version = "2.1.2"
+
+[package.dependencies]
+mongomock = "*"
+pymongo = "*"
+pytest = ">=2.5.2"
+pyyaml = "*"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "Extensions to the standard Python datetime module"
+name = "python-dateutil"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
+version = "2.8.0"
+
+[package.dependencies]
+six = ">=1.5"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "World timezone definitions, modern and historical"
+name = "pytz"
+optional = false
+python-versions = "*"
+version = "2019.2"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "YAML parser and emitter for Python"
+name = "pyyaml"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "5.1.2"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Various objects to denote special meanings in python"
+name = "sentinels"
+optional = false
+python-versions = "*"
+version = "1.0.0"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "Python 2 and 3 compatibility utilities"
+name = "six"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*"
+version = "1.12.0"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "The little ASGI library that shines."
+name = "starlette"
+optional = false
+python-versions = ">=3.6"
+version = "0.12.8"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Tornado is a Python web framework and asynchronous networking library, originally developed at FriendFeed."
+name = "tornado"
+optional = false
+python-versions = ">= 3.5"
+version = "6.0.3"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Measures number of Terminal column cells of wide-character codes"
+name = "wcwidth"
+optional = false
+python-versions = "*"
+version = "0.1.7"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "dev"
+description = "Backport of pathlib-compatible object wrapper for zip files"
+marker = "python_version < \"3.8\""
+name = "zipp"
+optional = false
+python-versions = ">=2.7"
+version = "0.6.0"
+
+[package.dependencies]
+more-itertools = "*"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[metadata]
+content-hash = "a94daf2fc0ff4b7d624950c40aa2f1de610fb24fa968736ef90548578da01161"
+python-versions = "^3.7"
+
+[metadata.hashes]
+asn1crypto = ["md5:1060a0dfb21580c901c5092dddbc76d7", "md5:de3520426e81a6581352d4366f310eb1"]
+atomicwrites = ["03472c30eb2c5d1ba9227e4c2ca66ab8287fbfbbda3888aa93dc2e28fc6811b4", "75a9445bac02d8d058d5e1fe689654ba5a6556a1dfd8ce6ec55a0ed79866cfa6"]
+attrs = ["69c0dbf2ed392de1cb5ec704444b08a5ef81680a61cb899dc08127123af36a79", "f0b870f674851ecbfbbbd364d6b5cbdff9dcedbc7f3f5e18a6891057f21fe399"]
+cffi = ["041c81822e9f84b1d9c401182e174996f0bae9991f33725d059b771744290774", "046ef9a22f5d3eed06334d01b1e836977eeef500d9b78e9ef693f9380ad0b83d", "066bc4c7895c91812eff46f4b1c285220947d4aa46fa0a2651ff85f2afae9c90", "066c7ff148ae33040c01058662d6752fd73fbc8e64787229ea8498c7d7f4041b", "2444d0c61f03dcd26dbf7600cf64354376ee579acad77aef459e34efcb438c63", "300832850b8f7967e278870c5d51e3819b9aad8f0a2c8dbe39ab11f119237f45", "34c77afe85b6b9e967bd8154e3855e847b70ca42043db6ad17f26899a3df1b25", "46de5fa00f7ac09f020729148ff632819649b3e05a007d286242c4882f7b1dc3", "4aa8ee7ba27c472d429b980c51e714a24f47ca296d53f4d7868075b175866f4b", "4d0004eb4351e35ed950c14c11e734182591465a33e960a4ab5e8d4f04d72647", "4e3d3f31a1e202b0f5a35ba3bc4eb41e2fc2b11c1eff38b362de710bcffb5016", "50bec6d35e6b1aaeb17f7c4e2b9374ebf95a8975d57863546fa83e8d31bdb8c4", "55cad9a6df1e2a1d62063f79d0881a414a906a6962bc160ac968cc03ed3efcfb", "5662ad4e4e84f1eaa8efce5da695c5d2e229c563f9d5ce5b0113f71321bcf753", "59b4dc008f98fc6ee2bb4fd7fc786a8d70000d058c2bbe2698275bc53a8d3fa7", "73e1ffefe05e4ccd7bcea61af76f36077b914f92b76f95ccf00b0c1b9186f3f9", "a1f0fd46eba2d71ce1589f7e50a9e2ffaeb739fb2c11e8192aa2b45d5f6cc41f", "a2e85dc204556657661051ff4bab75a84e968669765c8a2cd425918699c3d0e8", "a5457d47dfff24882a21492e5815f891c0ca35fefae8aa742c6c263dac16ef1f", "a8dccd61d52a8dae4a825cdbb7735da530179fea472903eb871a5513b5abbfdc", "ae61af521ed676cf16ae94f30fe202781a38d7178b6b4ab622e4eec8cefaff42", "b012a5edb48288f77a63dba0840c92d0504aa215612da4541b7b42d849bc83a3", "d2c5cfa536227f57f97c92ac30c8109688ace8fa4ac086d19d0af47d134e2909", "d42b5796e20aacc9d15e66befb7a345454eef794fdb0737d1af593447c6c8f45", "dee54f5d30d775f525894d67b1495625dd9322945e7fee00731952e0368ff42d", "e070535507bd6aa07124258171be2ee8dfc19119c28ca94c9dfb7efd23564512", "e1ff2748c84d97b065cc95429814cdba39bcbd77c9c85c89344b317dc0d9cbff", "ed851c75d1e0e043cbf5ca9a8e1b13c4c90f3fbd863dacb01c0808e2b5204201"]
+click = ["2335065e6395b9e67ca716de5f7526736bfa6ceead690adf616d925bdc622b13", "5b94b49521f6456670fdb30cd82a4eca9412788a93fa6dd6df72c94d5a8ff2d7"]
+colorama = ["05eed71e2e327246ad6b38c540c4a3117230b19679b875190486ddd2d721422d", "f8ac84de7840f5b9c4e3347b3c1eaa50f7e49c2b07596221daec5edaabbd7c48"]
+cryptography = ["24b61e5fcb506424d3ec4e18bca995833839bf13c59fc43e530e488f28d46b8c", "25dd1581a183e9e7a806fe0543f485103232f940fcfc301db65e630512cce643", "3452bba7c21c69f2df772762be0066c7ed5dc65df494a1d53a58b683a83e1216", "41a0be220dd1ed9e998f5891948306eb8c812b512dc398e5a01846d855050799", "5751d8a11b956fbfa314f6553d186b94aa70fdb03d8a4d4f1c82dcacf0cbe28a", "5f61c7d749048fa6e3322258b4263463bfccefecb0dd731b6561cb617a1d9bb9", "72e24c521fa2106f19623a3851e9f89ddfdeb9ac63871c7643790f872a305dfc", "7b97ae6ef5cba2e3bb14256625423413d5ce8d1abb91d4f29b6d1a081da765f8", "961e886d8a3590fd2c723cf07be14e2a91cf53c25f02435c04d39e90780e3b53", "96d8473848e984184b6728e2c9d391482008646276c3ff084a1bd89e15ff53a1", "ae536da50c7ad1e002c3eee101871d93abdc90d9c5f651818450a0d3af718609", "b0db0cecf396033abb4a93c95d1602f268b3a68bb0a9cc06a7cff587bb9a7292", "cfee9164954c186b191b91d4193989ca994703b2fff406f71cf454a2d3c7327e", "e6347742ac8f35ded4a46ff835c60e68c22a536a8ae5c4422966d06946b6d4c6", "f27d93f0139a3c056172ebb5d4f9056e770fdf0206c2f422ff2ebbad142e09ed", "f57b76e46a58b63d1c6375017f4564a28f19a5ca912691fd2e4261b3414b618d"]
+fastapi = ["273d099b7a8dd7cb1de166ea38216528406fbe042fb604d0025c00810e5ea858", "35c85f39f235da652f24eeb9378a90d479ed087fa9ae5798bac9dce2257b6115"]
+htmlmin = ["md5:a8903c90055b3fd685e3a1ce1ffdd7ac"]
+importlib-metadata = ["aa18d7378b00b40847790e7c27e11673d7fed219354109d0e7b9e5b25dc3ad26", "d5f18a79777f3aa179c145737780282e27b508fc8fd688cb17c7a813e8bd39af"]
+jinja2 = ["065c4f02ebe7f7cf559e49ee5a95fb800a9e4528727aec6f24402a5374c65013", "14dd6caf1527abb21f08f86c784eac40853ba93edb79552aa1e4b8aef1b61c7b"]
+jsmin = ["md5:00e7a3179a4591aab2ee707b3214e2fd"]
+livereload = ["78d55f2c268a8823ba499305dcac64e28ddeb9a92571e12d543cd304faf5817b", "89254f78d7529d7ea0a3417d224c34287ebfe266b05e67e51facaf82c27f0f66"]
+markdown = ["2e50876bcdd74517e7b71f3e7a76102050edec255b3983403f1a63e7c8a41e7a", "56a46ac655704b91e5b7e6326ce43d5ef72411376588afa1dd90e881b83c7e8c"]
+markupsafe = ["00bc623926325b26bb9605ae9eae8a215691f33cae5df11ca5424f06f2d1f473", "09027a7803a62ca78792ad89403b1b7a73a01c8cb65909cd876f7fcebd79b161", "09c4b7f37d6c648cb13f9230d847adf22f8171b1ccc4d5682398e77f40309235", "1027c282dad077d0bae18be6794e6b6b8c91d58ed8a8d89a89d59693b9131db5", "24982cc2533820871eba85ba648cd53d8623687ff11cbb805be4ff7b4c971aff", "29872e92839765e546828bb7754a68c418d927cd064fd4708fab9fe9c8bb116b", "43a55c2930bbc139570ac2452adf3d70cdbb3cfe5912c71cdce1c2c6bbd9c5d1", "46c99d2de99945ec5cb54f23c8cd5689f6d7177305ebff350a58ce5f8de1669e", "500d4957e52ddc3351cabf489e79c91c17f6e0899158447047588650b5e69183", "535f6fc4d397c1563d08b88e485c3496cf5784e927af890fb3c3aac7f933ec66", "62fe6c95e3ec8a7fad637b7f3d372c15ec1caa01ab47926cfdf7a75b40e0eac1", "6dd73240d2af64df90aa7c4e7481e23825ea70af4b4922f8ede5b9e35f78a3b1", "717ba8fe3ae9cc0006d7c451f0bb265ee07739daf76355d06366154ee68d221e", "79855e1c5b8da654cf486b830bd42c06e8780cea587384cf6545b7d9ac013a0b", "7c1699dfe0cf8ff607dbdcc1e9b9af1755371f92a68f706051cc8c37d447c905", "88e5fcfb52ee7b911e8bb6d6aa2fd21fbecc674eadd44118a9cc3863f938e735", "8defac2f2ccd6805ebf65f5eeb132adcf2ab57aa11fdf4c0dd5169a004710e7d", "98c7086708b163d425c67c7a91bad6e466bb99d797aa64f965e9d25c12111a5e", "9add70b36c5666a2ed02b43b335fe19002ee5235efd4b8a89bfcf9005bebac0d", "9bf40443012702a1d2070043cb6291650a0841ece432556f784f004937f0f32c", "ade5e387d2ad0d7ebf59146cc00c8044acbd863725f887353a10df825fc8ae21", "b00c1de48212e4cc9603895652c5c410df699856a2853135b3967591e4beebc2", "b1282f8c00509d99fef04d8ba936b156d419be841854fe901d8ae224c59f0be5", "b2051432115498d3562c084a49bba65d97cf251f5a331c64a12ee7e04dacc51b", "ba59edeaa2fc6114428f1637ffff42da1e311e29382d81b339c1817d37ec93c6", "c8716a48d94b06bb3b2524c2b77e055fb313aeb4ea620c8dd03a105574ba704f", "cd5df75523866410809ca100dc9681e301e3c27567cf498077e8551b6d20e42f", "e249096428b3ae81b08327a63a485ad0878de3fb939049038579ac0ef61e17e7"]
+mkdocs = ["17d34329aad75d5de604b9ed4e31df3a4d235afefdc46ce7b1964fddb2e1e939", "8cc8b38325456b9e942c981a209eaeb1e9f3f77b493ad755bfef889b9c8d356a"]
+mkdocs-material = ["75807513b2fa904219124f05802ef4e674a7312aa018446ed58054a48a76e66a", "d3e641f634227ce113ebdde1df0a0e0b1eba1d3f1da35344d68095b4270407b2"]
+mkdocs-minify-plugin = ["3000a5069dd0f42f56a8aaf7fd5ea1222c67487949617e39585d6b6434b074b6", "d54fdd5be6843dd29fd7af2f7fdd20a9eb4db46f1f6bed914e03b2f58d2d488e"]
+mongomock = ["1d29e2705bd2adffca0ba5dd59c9b988337323fc65a7545f7576b5abdb9e89d6", "bc21a7e04000ad66b2a9b2076f8713ac3bb30efa34569fd094390c54bff65dfa"]
+more-itertools = ["409cd48d4db7052af495b09dec721011634af3753ae1ef92d2b32f73a745f832", "92b8c4b06dac4f0611c0729b2f2ede52b2e1bac1ab48f089c7ddc12e26bb60c4"]
+numpy = ["05dbfe72684cc14b92568de1bc1f41e5f62b00f714afc9adee42f6311738091f", "0d82cb7271a577529d07bbb05cb58675f2deb09772175fab96dc8de025d8ac05", "10132aa1fef99adc85a905d82e8497a580f83739837d7cbd234649f2e9b9dc58", "12322df2e21f033a60c80319c25011194cd2a21294cc66fee0908aeae2c27832", "16f19b3aa775dddc9814e02a46b8e6ae6a54ed8cf143962b4e53f0471dbd7b16", "3d0b0989dd2d066db006158de7220802899a1e5c8cf622abe2d0bd158fd01c2c", "438a3f0e7b681642898fd7993d38e2bf140a2d1eafaf3e89bb626db7f50db355", "5fd214f482ab53f2cea57414c5fb3e58895b17df6e6f5bca5be6a0bb6aea23bb", "73615d3edc84dd7c4aeb212fa3748fb83217e00d201875a47327f55363cef2df", "7bd355ad7496f4ce1d235e9814ec81ee3d28308d591c067ce92e49f745ba2c2f", "7d077f2976b8f3de08a0dcf5d72083f4af5411e8fddacd662aae27baa2601196", "a4092682778dc48093e8bda8d26ee8360153e2047826f95a3f5eae09f0ae3abf", "b458de8624c9f6034af492372eb2fee41a8e605f03f4732f43fc099e227858b2", "e70fc8ff03a961f13363c2c95ef8285e0cf6a720f8271836f852cc0fa64e97c8", "ee8e9d7cad5fe6dde50ede0d2e978d81eafeaa6233fb0b8719f60214cf226578", "f4a4f6aba148858a5a5d546a99280f71f5ee6ec8182a7d195af1a914195b21a2"]
+packaging = ["28b924174df7a2fa32c1953825ff29c61e2f5e082343165438812f00d3a7fc47", "d9551545c6d761f3def1677baf08ab2a3ca17c56879e70fecba2fc4dde4ed108"]
+pandas = ["18d91a9199d1dfaa01ad645f7540370ba630bdcef09daaf9edf45b4b1bca0232", "3f26e5da310a0c0b83ea50da1fd397de2640b02b424aa69be7e0784228f656c9", "4182e32f4456d2c64619e97c58571fa5ca0993d1e8c2d9ca44916185e1726e15", "426e590e2eb0e60f765271d668a30cf38b582eaae5ec9b31229c8c3c10c5bc21", "5eb934a8f0dc358f0e0cdf314072286bbac74e4c124b64371395e94644d5d919", "717928808043d3ea55b9bcde636d4a52d2236c246f6df464163a66ff59980ad8", "8145f97c5ed71827a6ec98ceaef35afed1377e2d19c4078f324d209ff253ecb5", "8744c84c914dcc59cbbb2943b32b7664df1039d99e834e1034a3372acb89ea4d", "c1ac1d9590d0c9314ebf01591bd40d4c03d710bfc84a3889e5263c97d7891dee", "cb2e197b7b0687becb026b84d3c242482f20cbb29a9981e43604eb67576da9f6", "d4001b71ad2c9b84ff18b182cea22b7b6cbf624216da3ea06fb7af28d1f93165", "d8930772adccb2882989ab1493fa74bd87d47c8ac7417f5dd3dd834ba8c24dc9", "dfbb0173ee2399bc4ed3caf2d236e5c0092f948aafd0a15fbe4a0e77ee61a958", "eebfbba048f4fa8ac711b22c78516e16ff8117d05a580e7eeef6b0c2be554c18", "f1b21bc5cf3dbea53d33615d1ead892dfdae9d7052fa8898083bec88be20dcd2"]
+pep562 = ["58cb1cc9ee63d93e62b4905a50357618d526d289919814bea1f0da8f53b79395", "d2a48b178ebf5f8dd31709cc26a19808ef794561fa2fe50ea01ea2bad4d667ef"]
+pluggy = ["0db4b7601aae1d35b4a033282da476845aa19185c1e6964b25cf324b5e4ec3e6", "fa5fa1622fa6dd5c030e9cad086fa19ef6a0cf6d7a2d12318e10cb49d6d68f34"]
+py = ["64f65755aee5b381cea27766a3a147c3f15b9b6b9ac88676de66ba2ae36793fa", "dc639b046a6e2cff5bbe40194ad65936d6ba360b52b3c3fe1d08a82dd50b5e53"]
+pycparser = ["a988718abfad80b6b157acce7bf130a30876d27603738ac39f140993246b25b3"]
+pydantic = ["18598557f0d9ab46173045910ed50458c4fb4d16153c23346b504d7a5b679f77", "6a9335c968e13295430a208487e74d69fef40168b72dea8d975765d14e2da660", "6f5eb88fe4c21380aa064b7d249763fc6306f0b001d7e7d52d80866d1afc9ed3", "bc6c6a78647d7a65a493e1107572d993f26a652c49183201e3c7d23924bf7311", "e1a63b4e6bf8820833cb6fa239ffbe8eec57ccdd7d66359eff20e68a83c1deeb", "ede2d65ae33788d4e26e12b330b4a32c53cb14131c65bca3a59f037c73f6ee7a"]
+pygments = ["71e430bc85c88a430f000ac1d9b331d2407f681d6f6aec95e8bcfbc3df5b0127", "881c4c157e45f30af185c1ffe8d549d48ac9127433f2c380c24b84572ad66297"]
+pymdown-extensions = ["24c1a0afbae101c4e2b2675ff4dd936470a90133f93398b9cbe0c855e2d2ec10", "960486dea995f1759dfd517aa140b3d851cd7b44d4c48d276fd2c74fc4e1bce9"]
+pymongo = ["09f8196e1cb081713aa3face08d1806dc0a5dd64cb9f67fefc568519253a7ff2", "1be549c0ce2ba8242c149156ae2064b12a5d4704448d49f630b4910606efd474", "1f9fe869e289210250cba4ea20fbd169905b1793e1cd2737f423e107061afa98", "3653cea82d1e35edd0a2355150daf8a27ebf12cf55182d5ad1046bfa288f5140", "4249c6ba45587b959292a727532826c5032d59171f923f7f823788f413c2a5a3", "4ff8f5e7c0a78983c1ee07894fff1b21c0e0ad3a122d9786cc3745fd60e4a2ce", "56b29c638ab924716b48a3e94e3d7ac00b04acec1daa8190c36d61fc714c3629", "56ec9358bbfe5ae3b25e785f8a14619d6799c855a44734c9098bb457174019bf", "5dca250cbf1183c3e7b7b18c882c2b2199bfb20c74c4c68dbf11596808a296da", "61101d1cc92881fac1f9ac7e99b033062f4c210178dc33193c8f5567feecb069", "86624c0205a403fb4fbfedef79c5b4ab27e21fd018fdb6a27cf03b3c32a9e2b9", "88ac09e1b197c3b4531e43054d49c022a3ea1281431b2f4980abafa35d2a5ce2", "8b0339809b12ea292d468524dd1777f1a9637d9bdc0353a9261b88f82537d606", "93dbf7388f6bf9af48dbb32f265b75b3dbc743a7a2ce98e44c88c049c58d85d3", "9b705daec636c560dd2d63935f428a6b3cddfe903fffc0f349e0e91007c893d6", "a090a819fe6fefadc2901d3911c07c76c0935ec5c790a50e9f3c3c47bacd5978", "a102b346f1921237eaa9a31ee89eda57ad3c3973d79be3a456d92524e7df8fec", "a13363869f2f36291d6367069c65d51d7b8d1b2fb410266b0b6b1f3c90d6deb0", "a409a43c76da50881b70cc9ee70a1744f882848e8e93a68fb434254379777fa3", "a76475834a978058425b0163f1bad35a5f70e45929a543075633c3fc1df564c5", "ad474e93525baa6c58d75d63a73143af24c9f93c8e26e8d382f32c4da637901a", "b268c7fa03ac77a8662fab3b2ab0be4beecb82f60f4c24b584e69565691a107f", "cca4e1ab5ba0cd7877d3938167ee8ae9c2986cc0e10d3dcc3243d664d3a83fec", "cef61de3f0f4441ec40266ff2ab42e5c16eaba1dc1fc6e1036f274621c52adc1", "e28153b5d5ca33d4ba0c3bbc0e1ff161b9016e5e5f3f8ca10d6fa49106eb9e04", "f30d7b37804daf0bab1143abc71666c630d7e270f5c14c5a7c300a6699c21108", "f70f0133301cccf9bfd68fd20f67184ef991be578b646e78441106f9e27cc44d", "fa75c21c1d82f20cce62f6fc4a68c2b0f33572ab406df1b17cd77a947d0b2993"]
+pyparsing = ["6f98a7b9397e206d78cc01df10131398f1c8b8510a2f4d97d9abd82e1aacdd80", "d9338df12903bbf5d65a0e4e87c2161968b10d2e489652bb47001d82a9b028b4"]
+pytdx = ["91ccac0919cc28a9f8c4aee19d770fab06d38da9503148dfe78bdc200706afad"]
+pytest = ["813b99704b22c7d377bbd756ebe56c35252bb710937b46f207100e843440b3c2", "cc6620b96bc667a0c8d4fa592a8c9c94178a1bd6cc799dbb057dfd9286d31a31"]
+pytest-mongodb = ["md5:2931c76a53f50fc1db6e2b88d8b9cedf", "md5:474382970c37b7143c6ad98082ff5ba7"]
+python-dateutil = ["7e6584c74aeed623791615e26efd690f29817a27c73085b78e4bad02493df2fb", "c89805f6f4d64db21ed966fda138f8a5ed7a4fdbc1a8ee329ce1b74e3c74da9e"]
+pytz = ["26c0b32e437e54a18161324a2fca3c4b9846b74a8dccddd843113109e1116b32", "c894d57500a4cd2d5c71114aaab77dbab5eabd9022308ce5ac9bb93a60a6f0c7"]
+pyyaml = ["0113bc0ec2ad727182326b61326afa3d1d8280ae1122493553fd6f4397f33df9", "01adf0b6c6f61bd11af6e10ca52b7d4057dd0be0343eb9283c878cf3af56aee4", "5124373960b0b3f4aa7df1707e63e9f109b5263eca5976c66e08b1c552d4eaf8", "5ca4f10adbddae56d824b2c09668e91219bb178a1eee1faa56af6f99f11bf696", "7907be34ffa3c5a32b60b95f4d95ea25361c951383a894fec31be7252b2b6f34", "7ec9b2a4ed5cad025c2278a1e6a19c011c80a3caaac804fd2d329e9cc2c287c9", "87ae4c829bb25b9fe99cf71fbb2140c448f534e24c998cc60f39ae4f94396a73", "9de9919becc9cc2ff03637872a440195ac4241c80536632fffeb6a1e25a74299", "a5a85b10e450c66b49f98846937e8cfca1db3127a9d5d1e31ca45c3d0bef4c5b", "b0997827b4f6a7c286c01c5f60384d218dca4ed7d9efa945c3e1aa623d5709ae", "b631ef96d3222e62861443cc89d6563ba3eeb816eeb96b2629345ab795e53681", "bf47c0607522fdbca6c9e817a6e81b08491de50f3766a7a0e6a5be7905961b41", "f81025eddd0327c7d4cfe9b62cf33190e1e736cc6e97502b3ec425f574b3e7a8"]
+sentinels = ["md5:6b1327d94883cccbce8a18c1e7e835b1"]
+six = ["3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c", "d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73"]
+starlette = ["f600bf9d0beeeeebcb143e6d0c4f8858c2b05067d5a4feb446ba7400ba5e5dc5"]
+tornado = ["349884248c36801afa19e342a77cc4458caca694b0eda633f5878e458a44cb2c", "398e0d35e086ba38a0427c3b37f4337327231942e731edaa6e9fd1865bbd6f60", "4e73ef678b1a859f0cb29e1d895526a20ea64b5ffd510a2307b5998c7df24281", "559bce3d31484b665259f50cd94c5c28b961b09315ccd838f284687245f416e5", "abbe53a39734ef4aba061fca54e30c6b4639d3e1f59653f0da37a0003de148c7", "c845db36ba616912074c5b1ee897f8e0124df269468f25e4fe21fe72f6edd7a9", "c9399267c926a4e7c418baa5cbe91c7d1cf362d505a1ef898fde44a07c9dd8a5"]
+wcwidth = ["md5:9fb9f073e3560424296f3f2c745beac3", "md5:b3b6a0a08f0c8a34d1de8cf44150a4ad"]
+zipp = ["3718b1cbcd963c7d4c5511a8240812904164b7f381b647143a89d3b98f9bcd8e", "f06903e9f1f43b12d371004b4ac7b06ab39a44adc747266928ae6debfa7b3335"]
