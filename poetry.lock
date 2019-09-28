@@ -39,6 +39,51 @@ url = "https://pypi.tuna.tsinghua.edu.cn/simple"
 
 [[package]]
 category = "main"
+description = "Screen-scraping library"
+name = "beautifulsoup4"
+optional = false
+python-versions = "*"
+version = "4.8.0"
+
+[package.dependencies]
+soupsieve = ">=1.2"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "Screen-scraping library"
+name = "bs4"
+optional = false
+python-versions = "*"
+version = "0.0.1"
+
+[package.dependencies]
+beautifulsoup4 = "*"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "Python package for providing Mozilla's CA Bundle."
+name = "certifi"
+optional = false
+python-versions = "*"
+version = "2019.9.11"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
 description = "Foreign Function Interface for Python calling C code."
 name = "cffi"
 optional = false
@@ -47,6 +92,19 @@ version = "1.12.3"
 
 [package.dependencies]
 pycparser = "*"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "Universal encoding detector for Python 2 and 3"
+name = "chardet"
+optional = false
+python-versions = "*"
+version = "3.0.4"
 
 [package.source]
 reference = 'tsinghua'
@@ -100,6 +158,36 @@ url = "https://pypi.tuna.tsinghua.edu.cn/simple"
 
 [[package]]
 category = "main"
+description = "DNS toolkit"
+name = "dnspython"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "1.16.0"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "A robust email syntax and deliverability validation library for Python 2.x/3.x."
+name = "email-validator"
+optional = false
+python-versions = "*"
+version = "1.0.4"
+
+[package.dependencies]
+dnspython = ">=1.15.0"
+idna = ">=2.0.0"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
 description = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
 name = "fastapi"
 optional = false
@@ -116,12 +204,52 @@ type = "legacy"
 url = "https://pypi.tuna.tsinghua.edu.cn/simple"
 
 [[package]]
+category = "main"
+description = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
+name = "h11"
+optional = false
+python-versions = "*"
+version = "0.8.1"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
 category = "dev"
 description = "An HTML Minifier"
 name = "htmlmin"
 optional = false
 python-versions = "*"
 version = "0.1.12"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "A collection of framework independent HTTP protocol utils."
+marker = "sys_platform != \"win32\" and sys_platform != \"cygwin\" and platform_python_implementation != \"pypy\""
+name = "httptools"
+optional = false
+python-versions = "*"
+version = "0.0.13"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "Internationalized Domain Names in Applications (IDNA)"
+name = "idna"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "2.8"
 
 [package.source]
 reference = 'tsinghua'
@@ -185,6 +313,19 @@ version = "2.6.1"
 [package.dependencies]
 six = "*"
 tornado = "*"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API."
+name = "lxml"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, != 3.4.*"
+version = "4.4.1"
 
 [package.source]
 reference = 'tsinghua'
@@ -302,6 +443,22 @@ name = "more-itertools"
 optional = false
 python-versions = ">=3.4"
 version = "7.2.0"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "Non-blocking MongoDB driver for Tornado or asyncio"
+name = "motor"
+optional = false
+python-versions = "*"
+version = "2.0.0"
+
+[package.dependencies]
+pymongo = ">=3.6,<4"
 
 [package.source]
 reference = 'tsinghua'
@@ -457,7 +614,7 @@ type = "legacy"
 url = "https://pypi.tuna.tsinghua.edu.cn/simple"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Python driver for MongoDB <http://www.mongodb.org>"
 name = "pymongo"
 optional = false
@@ -565,6 +722,19 @@ url = "https://pypi.tuna.tsinghua.edu.cn/simple"
 
 [[package]]
 category = "main"
+description = "Add .env support to your django/flask apps in development and deployments"
+name = "python-dotenv"
+optional = false
+python-versions = "*"
+version = "0.10.3"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
 description = "World timezone definitions, modern and historical"
 name = "pytz"
 optional = false
@@ -583,6 +753,25 @@ name = "pyyaml"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "5.1.2"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "Python HTTP for Humans."
+name = "requests"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+version = "2.22.0"
+
+[package.dependencies]
+certifi = ">=2017.4.17"
+chardet = ">=3.0.2,<3.1.0"
+idna = ">=2.5,<2.9"
+urllib3 = ">=1.21.1,<1.25.0 || >1.25.0,<1.25.1 || >1.25.1,<1.26"
 
 [package.source]
 reference = 'tsinghua'
@@ -617,6 +806,19 @@ url = "https://pypi.tuna.tsinghua.edu.cn/simple"
 
 [[package]]
 category = "main"
+description = "A modern CSS selector implementation for Beautiful Soup."
+name = "soupsieve"
+optional = false
+python-versions = "*"
+version = "1.9.4"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
 description = "The little ASGI library that shines."
 name = "starlette"
 optional = false
@@ -642,12 +844,85 @@ type = "legacy"
 url = "https://pypi.tuna.tsinghua.edu.cn/simple"
 
 [[package]]
+category = "main"
+description = "A utility for crawling historical and Real-time Quotes data of China stocks"
+name = "tushare"
+optional = false
+python-versions = "*"
+version = "1.2.45"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "HTTP library with thread-safe connection pooling, file post, and more."
+name = "urllib3"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, <4"
+version = "1.25.6"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "The lightning-fast ASGI server."
+name = "uvicorn"
+optional = false
+python-versions = "*"
+version = "0.9.0"
+
+[package.dependencies]
+click = ">=7.0.0,<8.0.0"
+h11 = ">=0.8.0,<0.9.0"
+httptools = "0.0.13"
+uvloop = "<1.0.0"
+websockets = ">=8.0.0,<9.0.0"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "Fast implementation of asyncio event loop on top of libuv"
+marker = "sys_platform != \"win32\" and sys_platform != \"cygwin\" and platform_python_implementation != \"pypy\""
+name = "uvloop"
+optional = false
+python-versions = "*"
+version = "0.13.0"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
 category = "dev"
 description = "Measures number of Terminal column cells of wide-character codes"
 name = "wcwidth"
 optional = false
 python-versions = "*"
 version = "0.1.7"
+
+[package.source]
+reference = 'tsinghua'
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[[package]]
+category = "main"
+description = "An implementation of the WebSocket Protocol (RFC 6455 & 7692)"
+name = "websockets"
+optional = false
+python-versions = ">=3.6"
+version = "8.0.2"
 
 [package.source]
 reference = 'tsinghua'
@@ -672,23 +947,33 @@ type = "legacy"
 url = "https://pypi.tuna.tsinghua.edu.cn/simple"
 
 [metadata]
-content-hash = "a94daf2fc0ff4b7d624950c40aa2f1de610fb24fa968736ef90548578da01161"
+content-hash = "1dae0d1158565e3ff61b5770d504b2b77b1a3c11be9441fa28998c1a970d521a"
 python-versions = "^3.7"
 
 [metadata.hashes]
 asn1crypto = ["md5:1060a0dfb21580c901c5092dddbc76d7", "md5:de3520426e81a6581352d4366f310eb1"]
 atomicwrites = ["03472c30eb2c5d1ba9227e4c2ca66ab8287fbfbbda3888aa93dc2e28fc6811b4", "75a9445bac02d8d058d5e1fe689654ba5a6556a1dfd8ce6ec55a0ed79866cfa6"]
 attrs = ["69c0dbf2ed392de1cb5ec704444b08a5ef81680a61cb899dc08127123af36a79", "f0b870f674851ecbfbbbd364d6b5cbdff9dcedbc7f3f5e18a6891057f21fe399"]
+beautifulsoup4 = ["05668158c7b85b791c5abde53e50265e16f98ad601c402ba44d70f96c4159612", "25288c9e176f354bf277c0a10aa96c782a6a18a17122dba2e8cec4a97e03343b", "f040590be10520f2ea4c2ae8c3dae441c7cfff5308ec9d58a0ec0c1b8f81d469"]
+bs4 = ["md5:fe7e51587ac3b174608f3c4f8bd893ac"]
+certifi = ["e4f3620cfea4f83eedc95b24abd9cd56f3c4b146dd0177e83a21b4eb49e21e50", "fd7c7c74727ddcf00e9acd26bba8da604ffec95bf1c2144e67aff7a8b50e6cef"]
 cffi = ["041c81822e9f84b1d9c401182e174996f0bae9991f33725d059b771744290774", "046ef9a22f5d3eed06334d01b1e836977eeef500d9b78e9ef693f9380ad0b83d", "066bc4c7895c91812eff46f4b1c285220947d4aa46fa0a2651ff85f2afae9c90", "066c7ff148ae33040c01058662d6752fd73fbc8e64787229ea8498c7d7f4041b", "2444d0c61f03dcd26dbf7600cf64354376ee579acad77aef459e34efcb438c63", "300832850b8f7967e278870c5d51e3819b9aad8f0a2c8dbe39ab11f119237f45", "34c77afe85b6b9e967bd8154e3855e847b70ca42043db6ad17f26899a3df1b25", "46de5fa00f7ac09f020729148ff632819649b3e05a007d286242c4882f7b1dc3", "4aa8ee7ba27c472d429b980c51e714a24f47ca296d53f4d7868075b175866f4b", "4d0004eb4351e35ed950c14c11e734182591465a33e960a4ab5e8d4f04d72647", "4e3d3f31a1e202b0f5a35ba3bc4eb41e2fc2b11c1eff38b362de710bcffb5016", "50bec6d35e6b1aaeb17f7c4e2b9374ebf95a8975d57863546fa83e8d31bdb8c4", "55cad9a6df1e2a1d62063f79d0881a414a906a6962bc160ac968cc03ed3efcfb", "5662ad4e4e84f1eaa8efce5da695c5d2e229c563f9d5ce5b0113f71321bcf753", "59b4dc008f98fc6ee2bb4fd7fc786a8d70000d058c2bbe2698275bc53a8d3fa7", "73e1ffefe05e4ccd7bcea61af76f36077b914f92b76f95ccf00b0c1b9186f3f9", "a1f0fd46eba2d71ce1589f7e50a9e2ffaeb739fb2c11e8192aa2b45d5f6cc41f", "a2e85dc204556657661051ff4bab75a84e968669765c8a2cd425918699c3d0e8", "a5457d47dfff24882a21492e5815f891c0ca35fefae8aa742c6c263dac16ef1f", "a8dccd61d52a8dae4a825cdbb7735da530179fea472903eb871a5513b5abbfdc", "ae61af521ed676cf16ae94f30fe202781a38d7178b6b4ab622e4eec8cefaff42", "b012a5edb48288f77a63dba0840c92d0504aa215612da4541b7b42d849bc83a3", "d2c5cfa536227f57f97c92ac30c8109688ace8fa4ac086d19d0af47d134e2909", "d42b5796e20aacc9d15e66befb7a345454eef794fdb0737d1af593447c6c8f45", "dee54f5d30d775f525894d67b1495625dd9322945e7fee00731952e0368ff42d", "e070535507bd6aa07124258171be2ee8dfc19119c28ca94c9dfb7efd23564512", "e1ff2748c84d97b065cc95429814cdba39bcbd77c9c85c89344b317dc0d9cbff", "ed851c75d1e0e043cbf5ca9a8e1b13c4c90f3fbd863dacb01c0808e2b5204201"]
+chardet = ["md5:0004b00caff7bb543a1d0d0bd0185a03", "md5:7dd1ba7f9c77e32351b0a0cfacf4055c"]
 click = ["2335065e6395b9e67ca716de5f7526736bfa6ceead690adf616d925bdc622b13", "5b94b49521f6456670fdb30cd82a4eca9412788a93fa6dd6df72c94d5a8ff2d7"]
 colorama = ["05eed71e2e327246ad6b38c540c4a3117230b19679b875190486ddd2d721422d", "f8ac84de7840f5b9c4e3347b3c1eaa50f7e49c2b07596221daec5edaabbd7c48"]
 cryptography = ["24b61e5fcb506424d3ec4e18bca995833839bf13c59fc43e530e488f28d46b8c", "25dd1581a183e9e7a806fe0543f485103232f940fcfc301db65e630512cce643", "3452bba7c21c69f2df772762be0066c7ed5dc65df494a1d53a58b683a83e1216", "41a0be220dd1ed9e998f5891948306eb8c812b512dc398e5a01846d855050799", "5751d8a11b956fbfa314f6553d186b94aa70fdb03d8a4d4f1c82dcacf0cbe28a", "5f61c7d749048fa6e3322258b4263463bfccefecb0dd731b6561cb617a1d9bb9", "72e24c521fa2106f19623a3851e9f89ddfdeb9ac63871c7643790f872a305dfc", "7b97ae6ef5cba2e3bb14256625423413d5ce8d1abb91d4f29b6d1a081da765f8", "961e886d8a3590fd2c723cf07be14e2a91cf53c25f02435c04d39e90780e3b53", "96d8473848e984184b6728e2c9d391482008646276c3ff084a1bd89e15ff53a1", "ae536da50c7ad1e002c3eee101871d93abdc90d9c5f651818450a0d3af718609", "b0db0cecf396033abb4a93c95d1602f268b3a68bb0a9cc06a7cff587bb9a7292", "cfee9164954c186b191b91d4193989ca994703b2fff406f71cf454a2d3c7327e", "e6347742ac8f35ded4a46ff835c60e68c22a536a8ae5c4422966d06946b6d4c6", "f27d93f0139a3c056172ebb5d4f9056e770fdf0206c2f422ff2ebbad142e09ed", "f57b76e46a58b63d1c6375017f4564a28f19a5ca912691fd2e4261b3414b618d"]
+dnspython = ["36c5e8e38d4369a08b6780b7f27d790a292b2b08eea01607865bf0936c558e01", "f69c21288a962f4da86e56c4905b49d11aba7938d3d740e80d9e366ee4f1632d"]
+email-validator = ["79966e318d6d68fed359c90f8f19d242bcc178b724011f1c07145bd093da6cc7"]
 fastapi = ["273d099b7a8dd7cb1de166ea38216528406fbe042fb604d0025c00810e5ea858", "35c85f39f235da652f24eeb9378a90d479ed087fa9ae5798bac9dce2257b6115"]
+h11 = ["acca6a44cb52a32ab442b1779adf0875c443c689e9e028f8d831a3769f9c5208", "f2b1ca39bfed357d1f19ac732913d5f9faa54a5062eca7d2ec3a916cfb7ae4c7"]
 htmlmin = ["md5:a8903c90055b3fd685e3a1ce1ffdd7ac"]
+httptools = ["e00cbd7ba01ff748e494248183abc6e153f49181169d8a3d41bb49132ca01dfc"]
+idna = ["c357b3f628cf53ae2c4c05627ecc484553142ca23264e593d327bcde5e9c3407", "ea8b7f6188e6fa117537c3df7da9fc686d485087abf6ac197f9c46432f7e4a3c"]
 importlib-metadata = ["aa18d7378b00b40847790e7c27e11673d7fed219354109d0e7b9e5b25dc3ad26", "d5f18a79777f3aa179c145737780282e27b508fc8fd688cb17c7a813e8bd39af"]
 jinja2 = ["065c4f02ebe7f7cf559e49ee5a95fb800a9e4528727aec6f24402a5374c65013", "14dd6caf1527abb21f08f86c784eac40853ba93edb79552aa1e4b8aef1b61c7b"]
 jsmin = ["md5:00e7a3179a4591aab2ee707b3214e2fd"]
 livereload = ["78d55f2c268a8823ba499305dcac64e28ddeb9a92571e12d543cd304faf5817b", "89254f78d7529d7ea0a3417d224c34287ebfe266b05e67e51facaf82c27f0f66"]
+lxml = ["02ca7bf899da57084041bb0f6095333e4d239948ad3169443f454add9f4e9cb4", "096b82c5e0ea27ce9138bcbb205313343ee66a6e132f25c5ed67e2c8d960a1bc", "0a920ff98cf1aac310470c644bc23b326402d3ef667ddafecb024e1713d485f1", "17cae1730a782858a6e2758fd20dd0ef7567916c47757b694a06ffafdec20046", "17e3950add54c882e032527795c625929613adbd2ce5162b94667334458b5a36", "1f4f214337f6ee5825bf90a65d04d70aab05526c08191ab888cb5149501923c5", "2e8f77db25b0a96af679e64ff9bf9dddb27d379c9900c3272f3041c4d1327c9d", "4dffd405390a45ecb95ab5ab1c1b847553c18b0ef8ed01e10c1c8b1a76452916", "6b899931a5648862c7b88c795eddff7588fb585e81cecce20f8d9da16eff96e0", "726c17f3e0d7a7200718c9a890ccfeab391c9133e363a577a44717c85c71db27", "760c12276fee05c36f95f8040180abc7fbebb9e5011447a97cdc289b5d6ab6fc", "796685d3969815a633827c818863ee199440696b0961e200b011d79b9394bbe7", "891fe897b49abb7db470c55664b198b1095e4943b9f82b7dcab317a19116cd38", "a471628e20f03dcdfde00770eeaf9c77811f0c331c8805219ca7b87ac17576c5", "a63b4fd3e2cabdcc9d918ed280bdde3e8e9641e04f3c59a2a3109644a07b9832", "b0b84408d4eabc6de9dd1e1e0bc63e7731e890c0b378a62443e5741cfd0ae90a", "be78485e5d5f3684e875dab60f40cddace2f5b2a8f7fede412358ab3214c3a6f", "c27eaed872185f047bb7f7da2d21a7d8913457678c9a100a50db6da890bc28b9", "c81cb40bff373ab7a7446d6bbca0190bccc5be3448b47b51d729e37799bb5692", "d11874b3c33ee441059464711cd365b89fa1a9cf19ae75b0c189b01fbf735b84", "e9c028b5897901361d81a4718d1db217b716424a0283afe9d6735fe0caf70f79", "fe489d486cd00b739be826e8c1be188ddb74c7a1ca784d93d06fda882a6a1681"]
 markdown = ["2e50876bcdd74517e7b71f3e7a76102050edec255b3983403f1a63e7c8a41e7a", "56a46ac655704b91e5b7e6326ce43d5ef72411376588afa1dd90e881b83c7e8c"]
 markupsafe = ["00bc623926325b26bb9605ae9eae8a215691f33cae5df11ca5424f06f2d1f473", "09027a7803a62ca78792ad89403b1b7a73a01c8cb65909cd876f7fcebd79b161", "09c4b7f37d6c648cb13f9230d847adf22f8171b1ccc4d5682398e77f40309235", "1027c282dad077d0bae18be6794e6b6b8c91d58ed8a8d89a89d59693b9131db5", "24982cc2533820871eba85ba648cd53d8623687ff11cbb805be4ff7b4c971aff", "29872e92839765e546828bb7754a68c418d927cd064fd4708fab9fe9c8bb116b", "43a55c2930bbc139570ac2452adf3d70cdbb3cfe5912c71cdce1c2c6bbd9c5d1", "46c99d2de99945ec5cb54f23c8cd5689f6d7177305ebff350a58ce5f8de1669e", "500d4957e52ddc3351cabf489e79c91c17f6e0899158447047588650b5e69183", "535f6fc4d397c1563d08b88e485c3496cf5784e927af890fb3c3aac7f933ec66", "62fe6c95e3ec8a7fad637b7f3d372c15ec1caa01ab47926cfdf7a75b40e0eac1", "6dd73240d2af64df90aa7c4e7481e23825ea70af4b4922f8ede5b9e35f78a3b1", "717ba8fe3ae9cc0006d7c451f0bb265ee07739daf76355d06366154ee68d221e", "79855e1c5b8da654cf486b830bd42c06e8780cea587384cf6545b7d9ac013a0b", "7c1699dfe0cf8ff607dbdcc1e9b9af1755371f92a68f706051cc8c37d447c905", "88e5fcfb52ee7b911e8bb6d6aa2fd21fbecc674eadd44118a9cc3863f938e735", "8defac2f2ccd6805ebf65f5eeb132adcf2ab57aa11fdf4c0dd5169a004710e7d", "98c7086708b163d425c67c7a91bad6e466bb99d797aa64f965e9d25c12111a5e", "9add70b36c5666a2ed02b43b335fe19002ee5235efd4b8a89bfcf9005bebac0d", "9bf40443012702a1d2070043cb6291650a0841ece432556f784f004937f0f32c", "ade5e387d2ad0d7ebf59146cc00c8044acbd863725f887353a10df825fc8ae21", "b00c1de48212e4cc9603895652c5c410df699856a2853135b3967591e4beebc2", "b1282f8c00509d99fef04d8ba936b156d419be841854fe901d8ae224c59f0be5", "b2051432115498d3562c084a49bba65d97cf251f5a331c64a12ee7e04dacc51b", "ba59edeaa2fc6114428f1637ffff42da1e311e29382d81b339c1817d37ec93c6", "c8716a48d94b06bb3b2524c2b77e055fb313aeb4ea620c8dd03a105574ba704f", "cd5df75523866410809ca100dc9681e301e3c27567cf498077e8551b6d20e42f", "e249096428b3ae81b08327a63a485ad0878de3fb939049038579ac0ef61e17e7"]
 mkdocs = ["17d34329aad75d5de604b9ed4e31df3a4d235afefdc46ce7b1964fddb2e1e939", "8cc8b38325456b9e942c981a209eaeb1e9f3f77b493ad755bfef889b9c8d356a"]
@@ -696,6 +981,7 @@ mkdocs-material = ["75807513b2fa904219124f05802ef4e674a7312aa018446ed58054a48a76
 mkdocs-minify-plugin = ["3000a5069dd0f42f56a8aaf7fd5ea1222c67487949617e39585d6b6434b074b6", "d54fdd5be6843dd29fd7af2f7fdd20a9eb4db46f1f6bed914e03b2f58d2d488e"]
 mongomock = ["1d29e2705bd2adffca0ba5dd59c9b988337323fc65a7545f7576b5abdb9e89d6", "bc21a7e04000ad66b2a9b2076f8713ac3bb30efa34569fd094390c54bff65dfa"]
 more-itertools = ["409cd48d4db7052af495b09dec721011634af3753ae1ef92d2b32f73a745f832", "92b8c4b06dac4f0611c0729b2f2ede52b2e1bac1ab48f089c7ddc12e26bb60c4"]
+motor = ["462fbb824f4289481c158227a2579d6adaf1ec7c70cf7ebe60ed6ceb321e5869", "d035c09ab422bc50bf3efb134f7405694cae76268545bd21e14fb22e2638f84e"]
 numpy = ["05dbfe72684cc14b92568de1bc1f41e5f62b00f714afc9adee42f6311738091f", "0d82cb7271a577529d07bbb05cb58675f2deb09772175fab96dc8de025d8ac05", "10132aa1fef99adc85a905d82e8497a580f83739837d7cbd234649f2e9b9dc58", "12322df2e21f033a60c80319c25011194cd2a21294cc66fee0908aeae2c27832", "16f19b3aa775dddc9814e02a46b8e6ae6a54ed8cf143962b4e53f0471dbd7b16", "3d0b0989dd2d066db006158de7220802899a1e5c8cf622abe2d0bd158fd01c2c", "438a3f0e7b681642898fd7993d38e2bf140a2d1eafaf3e89bb626db7f50db355", "5fd214f482ab53f2cea57414c5fb3e58895b17df6e6f5bca5be6a0bb6aea23bb", "73615d3edc84dd7c4aeb212fa3748fb83217e00d201875a47327f55363cef2df", "7bd355ad7496f4ce1d235e9814ec81ee3d28308d591c067ce92e49f745ba2c2f", "7d077f2976b8f3de08a0dcf5d72083f4af5411e8fddacd662aae27baa2601196", "a4092682778dc48093e8bda8d26ee8360153e2047826f95a3f5eae09f0ae3abf", "b458de8624c9f6034af492372eb2fee41a8e605f03f4732f43fc099e227858b2", "e70fc8ff03a961f13363c2c95ef8285e0cf6a720f8271836f852cc0fa64e97c8", "ee8e9d7cad5fe6dde50ede0d2e978d81eafeaa6233fb0b8719f60214cf226578", "f4a4f6aba148858a5a5d546a99280f71f5ee6ec8182a7d195af1a914195b21a2"]
 packaging = ["28b924174df7a2fa32c1953825ff29c61e2f5e082343165438812f00d3a7fc47", "d9551545c6d761f3def1677baf08ab2a3ca17c56879e70fecba2fc4dde4ed108"]
 pandas = ["18d91a9199d1dfaa01ad645f7540370ba630bdcef09daaf9edf45b4b1bca0232", "3f26e5da310a0c0b83ea50da1fd397de2640b02b424aa69be7e0784228f656c9", "4182e32f4456d2c64619e97c58571fa5ca0993d1e8c2d9ca44916185e1726e15", "426e590e2eb0e60f765271d668a30cf38b582eaae5ec9b31229c8c3c10c5bc21", "5eb934a8f0dc358f0e0cdf314072286bbac74e4c124b64371395e94644d5d919", "717928808043d3ea55b9bcde636d4a52d2236c246f6df464163a66ff59980ad8", "8145f97c5ed71827a6ec98ceaef35afed1377e2d19c4078f324d209ff253ecb5", "8744c84c914dcc59cbbb2943b32b7664df1039d99e834e1034a3372acb89ea4d", "c1ac1d9590d0c9314ebf01591bd40d4c03d710bfc84a3889e5263c97d7891dee", "cb2e197b7b0687becb026b84d3c242482f20cbb29a9981e43604eb67576da9f6", "d4001b71ad2c9b84ff18b182cea22b7b6cbf624216da3ea06fb7af28d1f93165", "d8930772adccb2882989ab1493fa74bd87d47c8ac7417f5dd3dd834ba8c24dc9", "dfbb0173ee2399bc4ed3caf2d236e5c0092f948aafd0a15fbe4a0e77ee61a958", "eebfbba048f4fa8ac711b22c78516e16ff8117d05a580e7eeef6b0c2be554c18", "f1b21bc5cf3dbea53d33615d1ead892dfdae9d7052fa8898083bec88be20dcd2"]
@@ -712,11 +998,19 @@ pytdx = ["91ccac0919cc28a9f8c4aee19d770fab06d38da9503148dfe78bdc200706afad"]
 pytest = ["813b99704b22c7d377bbd756ebe56c35252bb710937b46f207100e843440b3c2", "cc6620b96bc667a0c8d4fa592a8c9c94178a1bd6cc799dbb057dfd9286d31a31"]
 pytest-mongodb = ["md5:2931c76a53f50fc1db6e2b88d8b9cedf", "md5:474382970c37b7143c6ad98082ff5ba7"]
 python-dateutil = ["7e6584c74aeed623791615e26efd690f29817a27c73085b78e4bad02493df2fb", "c89805f6f4d64db21ed966fda138f8a5ed7a4fdbc1a8ee329ce1b74e3c74da9e"]
+python-dotenv = ["debd928b49dbc2bf68040566f55cdb3252458036464806f4094487244e2a4093", "f157d71d5fec9d4bd5f51c82746b6344dffa680ee85217c123f4a0c8117c4544"]
 pytz = ["26c0b32e437e54a18161324a2fca3c4b9846b74a8dccddd843113109e1116b32", "c894d57500a4cd2d5c71114aaab77dbab5eabd9022308ce5ac9bb93a60a6f0c7"]
 pyyaml = ["0113bc0ec2ad727182326b61326afa3d1d8280ae1122493553fd6f4397f33df9", "01adf0b6c6f61bd11af6e10ca52b7d4057dd0be0343eb9283c878cf3af56aee4", "5124373960b0b3f4aa7df1707e63e9f109b5263eca5976c66e08b1c552d4eaf8", "5ca4f10adbddae56d824b2c09668e91219bb178a1eee1faa56af6f99f11bf696", "7907be34ffa3c5a32b60b95f4d95ea25361c951383a894fec31be7252b2b6f34", "7ec9b2a4ed5cad025c2278a1e6a19c011c80a3caaac804fd2d329e9cc2c287c9", "87ae4c829bb25b9fe99cf71fbb2140c448f534e24c998cc60f39ae4f94396a73", "9de9919becc9cc2ff03637872a440195ac4241c80536632fffeb6a1e25a74299", "a5a85b10e450c66b49f98846937e8cfca1db3127a9d5d1e31ca45c3d0bef4c5b", "b0997827b4f6a7c286c01c5f60384d218dca4ed7d9efa945c3e1aa623d5709ae", "b631ef96d3222e62861443cc89d6563ba3eeb816eeb96b2629345ab795e53681", "bf47c0607522fdbca6c9e817a6e81b08491de50f3766a7a0e6a5be7905961b41", "f81025eddd0327c7d4cfe9b62cf33190e1e736cc6e97502b3ec425f574b3e7a8"]
+requests = ["11e007a8a2aa0323f5a921e9e6a2d7e4e67d9877e85773fba9ba6419025cbeb4", "9cf5292fcd0f598c671cfc1e0d7d1a7f13bb8085e9a590f48c010551dc6c4b31"]
 sentinels = ["md5:6b1327d94883cccbce8a18c1e7e835b1"]
 six = ["3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c", "d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73"]
+soupsieve = ["605f89ad5fdbfefe30cdc293303665eff2d188865d4dbe4eb510bba1edfbfce3", "b91d676b330a0ebd5b21719cb6e9b57c57d433671f65b9c28dd3461d9a1ed0b6"]
 starlette = ["f600bf9d0beeeeebcb143e6d0c4f8858c2b05067d5a4feb446ba7400ba5e5dc5"]
 tornado = ["349884248c36801afa19e342a77cc4458caca694b0eda633f5878e458a44cb2c", "398e0d35e086ba38a0427c3b37f4337327231942e731edaa6e9fd1865bbd6f60", "4e73ef678b1a859f0cb29e1d895526a20ea64b5ffd510a2307b5998c7df24281", "559bce3d31484b665259f50cd94c5c28b961b09315ccd838f284687245f416e5", "abbe53a39734ef4aba061fca54e30c6b4639d3e1f59653f0da37a0003de148c7", "c845db36ba616912074c5b1ee897f8e0124df269468f25e4fe21fe72f6edd7a9", "c9399267c926a4e7c418baa5cbe91c7d1cf362d505a1ef898fde44a07c9dd8a5"]
+tushare = ["06d69b7220e4bf8ffd84c245130a0dd87c314110eadf7b51f176b15d46758fd4", "6fa544c62a140ab56acb1e9223c658f238e80019ba13af86befec972b9dc3cb7"]
+urllib3 = ["3de946ffbed6e6746608990594d08faac602528ac7015ac28d33cee6a45b7398", "9a107b99a5393caf59c7aa3c1249c16e6879447533d0887f4336dde834c7be86"]
+uvicorn = ["639cdeb92cdb0205494ca36be03d08e05d57249491751feb5fc74b023a0d18f3"]
+uvloop = ["0deb6c97c5807c792dd9024bab90e6ca49e981862103cb2ea37b430c1ca0a267", "155b34d513655e753d07f499a7e811970e2d397f240dfcbec0b32a9587159c99", "1df3ddfa280206e9999ae1c777a20836eb895bcec6dc9fae2cbb6eecfafb099e", "5b19361c8767e1dc61f6367f948d4f3dc5504b9f2eba488641b3d26ec14498ba", "942cd07035510b149d6160796f4e972137130ae953871b6a98c2cf5d5ab68c2e", "c63b6c0bf33144c604dd72f7eecf2d3a3ac7405c503c67bd98128cf306efe18a", "e698a20a3b4ccb380d207f9d491d4085d7c38d364f6a0bae98684a1612a9607a"]
 wcwidth = ["md5:9fb9f073e3560424296f3f2c745beac3", "md5:b3b6a0a08f0c8a34d1de8cf44150a4ad"]
+websockets = ["049e694abe33f8a1d99969fee7bfc0ae6761f7fd5f297c58ea933b27dd6805f2", "73ce69217e4655783ec72ce11c151053fcbd5b837cc39de7999e19605182e28a", "83e63aa73331b9ca21af61df8f115fb5fbcba3f281bee650a4ad16a40cd1ef15", "882a7266fa867a2ebb2c0baaa0f9159cabf131cf18c1b4270d79ad42f9208dc5", "8c77f7d182a6ea2a9d09c2612059f3ad859a90243e899617137ee3f6b7f2b584", "8d7a20a2f97f1e98c765651d9fb9437201a9ccc2c70e94b0270f1c5ef29667a3", "a7affaeffbc5d55681934c16bb6b8fc82bb75b175e7fd4dcca798c938bde8dda", "c82e286555f839846ef4f0fdd6910769a577952e1e26aa8ee7a6f45f040e3c2b", "e906128532a14b9d264a43eb48f9b3080d53a9bda819ab45bf56b8039dc606ac", "e9102043a81cdc8b7c8032ff4bce39f6229e4ac39cb2010946c912eeb84e2cb6", "f5cb2683367e32da6a256b60929a3af9c29c212b5091cf5bace9358d03011bf5"]
 zipp = ["3718b1cbcd963c7d4c5511a8240812904164b7f381b647143a89d3b98f9bcd8e", "f06903e9f1f43b12d371004b4ac7b06ab39a44adc747266928ae6debfa7b3335"]

@@ -18,10 +18,10 @@ default:
 	@echo "\tmake format_code          用black美化代码"
 
 server:
-	poetry run uvicorn app.main:app --host=$(HOST) --port=$(PORT)
+	poetry run uvicorn paperplane.main:app --host=$(HOST) --port=$(PORT) --log-level=info
 
 debug:
-	poetry run uvicorn app.main:app --host=$(HOST) --port=$(PORT) --reload --debug
+	poetry run uvicorn paperplane.main:app --host=$(HOST) --port=$(PORT) --reload --debug --log-level=debug
 
 test:
 	PYTHONPATH=. poetry run pytest tests
