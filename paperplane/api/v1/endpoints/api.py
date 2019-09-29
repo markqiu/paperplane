@@ -29,12 +29,13 @@ def index():
     return "欢迎使用模拟交易系统, 请参考README.MD 查阅相关文档"
 
 
-@router.post("/creat")
+@router.post("/create")
 def account_creat(
-    account: Account, db_client: AsyncIOMotorDatabase = Depends(get_database)
+    account: Account = Body(...),
+    db_client: AsyncIOMotorDatabase = Depends(get_database),
 ):
     """创建账户"""
-    account_id = create_account(Account, db_client)
+    account_id = create_account(account, db_client)
     if account_id:
         return account_id
     else:

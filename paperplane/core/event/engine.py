@@ -4,9 +4,9 @@ Event-driven framework of vn.py framework.
 
 from collections import defaultdict
 from queue import Empty, Queue
-from threading import Thread
 from time import sleep
 from typing import Any, Callable
+from fastapi import BackgroundTasks
 
 EVENT_TIMER = "eTimer"
 
@@ -45,8 +45,8 @@ class EventEngine:
         self._interval = interval
         self._queue = Queue()
         self._active = False
-        self._thread = Thread(target=self._run)
-        self._timer = Thread(target=self._run_timer)
+        tasks_pool = BackgroundTasks()
+        self._tasks_pool = tasks_pool
         self._handlers = defaultdict(list)
         self._general_handlers = []
 
@@ -89,16 +89,14 @@ class EventEngine:
         Start event engine to process events and generate timer events.
         """
         self._active = True
-        self._thread.start()
-        self._timer.start()
+        self._tasks_pool.add_task(self._run)
+        self._tasks_pool.add_task(self._run_timer)
 
     def stop(self):
         """
         Stop event engine.
         """
         self._active = False
-        self._timer.join()
-        self._thread.join()
 
     def put(self, event: Event):
         """

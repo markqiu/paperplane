@@ -420,7 +420,7 @@ async def on_position_liquidation(account_id, db, price_dict: dict = None):
                 if pos["pt_symbol"] in price_dict.keys():
                     # 更新最新价格
                     new_price = price_dict.get(pos["pt_symbol"])
-                    await on_position_update_price(account_id, pos, new_price, db)
+                    await on_position_update_price(pos, new_price, db)
             # 解除账户冻结
             await on_position_frozen_cancel(account_id, pos, db)
 

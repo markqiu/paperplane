@@ -1,6 +1,12 @@
 import pytest
 from starlette.testclient import TestClient
 from paperplane.db.client.mongodb import get_database
+from paperplane.core.trade.constants import account_cl
+
+
+@pytest.fixture(scope="session")
+def test_base_url():
+    return "/api/v1"
 
 
 @pytest.fixture(scope="session")
@@ -10,6 +16,19 @@ def test_client():
 
     with TestClient(app) as test_client:
         yield test_client
+        db = get_database()
+        db[account_cl].delete_many({})
 
-    db = get_database()
-    db[users_collection_name].delete_many({})
+
+@pytest.fixture(scope="session")
+def test_acount():
+    """测试账号"""
+    return {
+        "account": {
+            "account_id": "1234567",
+            "assets": 1000000,
+            "available": 0,
+            "market_value": 0,
+            "account_info": "",
+        }
+    }

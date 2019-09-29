@@ -2,7 +2,6 @@ import logging
 from collections import OrderedDict
 from datetime import datetime, time
 from time import sleep
-import asyncio
 
 from .constants import orders_book_cl
 from ..event import Event
@@ -124,12 +123,7 @@ class ChinaAMarket(Exchange):
                 continue
 
             # 获取最新的订单
-            orders = await self.query_orders_book(db)
-
-            if not orders:
-                continue
-
-            for order in orders:
+            async for order in self.query_orders_book(db):
                 order = await order_generate(order)
                 # 订单验证
                 if not await self.on_back_verification(order):
@@ -213,22 +207,19 @@ class ChinaAMarket(Exchange):
 
     async def on_orders_book_rejected_all(self, db):
         """拒绝所有订单"""
-        orders = await self.query_orders_book(db)
+        async for order in self.query_orders_book(db):
+            order = await order_generate(order)
+            await self.on_orders_book_delete(order, db)
 
-        if orders:
-            for order in orders:
-                order = await order_generate(order)
-                await self.on_orders_book_delete(order, db)
+            order.status = Status.REJECTED.value
+            order.error_msg = "交易关闭，自动拒单"
 
-                order.status = Status.REJECTED.value
-                order.error_msg = "交易关闭，自动拒单"
+            event = Event(EVENT_ORDER_REJECTED, order)
+            self.event_engine.put(event)
 
-                event = Event(EVENT_ORDER_REJECTED, order)
-                self.event_engine.put(event)
-
-                logging.info(
-                    f"处理订单：账户：{order.account_id}, 订单号：{order.order_id}, 结果：{order.error_msg}"
-                )
+            logging.info(
+                f"处理订单：账户：{order.account_id}, 订单号：{order.order_id}, 结果：{order.error_msg}"
+            )
 
     async def on_orders_status_modify(self, order, db):
         """更新订单状态"""
@@ -322,9 +313,7 @@ class ChinaAMarket(Exchange):
                         if hq is not None:
                             now_price = float(hq.loc[0, "price"])
                             # 更新收盘行情
-                            await on_position_update_price(
-                                account_id, pos, now_price, db
-                            )
+                            await on_position_update_price(pos, now_price, db)
                 # 清算
                 await on_liquidation(db, account_id)
         logging.info(f"{self.market_name}: 账户与持仓清算完成")

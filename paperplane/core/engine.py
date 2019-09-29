@@ -69,6 +69,8 @@ class MainEngine:
         """模拟交易引擎关闭"""
         # 关闭数据库
         self._dbclient.close()
+        # TODO 找到关闭backgroundtask的方法
+        del self._market_match
 
         logging.info("模拟交易主引擎：关闭")
 
@@ -85,8 +87,6 @@ class MainEngine:
     def process_market_close(self, event):
         """市场关闭处理"""
         market_name = event.data
-
-        self._thread.join()
         logging.info(f"{market_name}: 交易市场已经关闭")
 
     def process_error_event(self, event):
