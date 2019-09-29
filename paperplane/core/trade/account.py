@@ -2,28 +2,18 @@ import time
 
 import pandas as pd
 
-from ...main import Settings
+from ..settings import Settings
 from ...models.constant import Status, OrderType, TradeType
 from ...models.model import Account, Position, Order
+from .constants import account_cl, orders_book_cl, position_cl, trade_cl
 
-account_cl = "accounts"
-position_cl = "positions"
-orders_book_cl = Settings.MARKET_NAME + "orders_book"
-trade_cl = "trades"
 
 """账户操作"""
 
 
-async def create_account(account_id, account_info: str, db):
+async def create_account(account: Account, db):
     """创建账户"""
     try:
-        account = Account(
-            account_id=account_id,
-            assets=round(Settings.ASSETS, Settings.POINT),
-            available=round(Settings.ASSETS, Settings.POINT),
-            market_value=round(0.0, Settings.POINT),
-            account_info=account_info,
-        )
         account_id = await db[account_cl].insert_one(account)
         return account_id
     except BaseException:
@@ -430,7 +420,7 @@ async def on_position_liquidation(account_id, db, price_dict: dict = None):
                 if pos["pt_symbol"] in price_dict.keys():
                     # 更新最新价格
                     new_price = price_dict.get(pos["pt_symbol"])
-                    await on_position_update_price(account_id, pos, new_price)
+                    await on_position_update_price(account_id, pos, new_price, db)
             # 解除账户冻结
             await on_position_frozen_cancel(account_id, pos, db)
 

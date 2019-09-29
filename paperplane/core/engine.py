@@ -1,11 +1,11 @@
 import logging
 from abc import ABC
-from threading import Thread
+from fastapi import BackgroundTasks
 
 from ..core.event import EventEngine
 from ..core.trade.account import on_order_deal, on_order_cancel
 from ..core.trade.market import Exchange, ChinaAMarket
-from ..db.client.mongodb import get_database
+from ..db.client.mongodb import get_client, get_database
 from ..models.event import (
     EVENT_ERROR,
     EVENT_MARKET_CLOSE,
@@ -31,8 +31,8 @@ class MainEngine:
         # 开启邮件引擎
         # TODO
 
-        # 市场交易线程
-        self._thread = Thread(target=self._run)
+        # 初始化后台任务
+        self._market_match = BackgroundTasks()
 
         # 注册事件监听
         self.event_register()
@@ -54,25 +54,21 @@ class MainEngine:
         if not self._market:
             self._market = ChinaAMarket(self.event_engine)
 
+        # 获取数据库连接
+        self._dbclient = get_client()
+
         # 连接数据库
         self._db = get_database()
 
         # 启动订单薄撮合程序
-        self._thread.start()
+        self._market_match.add_task(self._market.on_match, self._db)
 
         return True
 
-    def _run(self):
-        """订单薄撮合程序启动"""
-        self._market.on_match(self._db)
-
     def _close(self):
         """模拟交易引擎关闭"""
-        # 关闭市场
-        self._thread.join()
-
         # 关闭数据库
-        self._db.close()
+        self._dbclient.close()
 
         logging.info("模拟交易主引擎：关闭")
 
@@ -115,12 +111,20 @@ class BaseEngine(ABC):
         pass
 
 
-async def start_engine():
-    # 启动撮合引擎
-    me = MainEngine()
+me = None
 
+
+async def start_engine():
+    global me
+    # 初始化撮合引擎
+    me = MainEngine()
     # 开启模拟交易引擎
     if me.start():
         logging.info("启动撮合引擎成功！")
     else:
         logging.critical("启动撮合引擎失败！")
+
+
+async def stop_engine():
+    global me
+    me._close()

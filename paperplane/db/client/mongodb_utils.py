@@ -27,6 +27,8 @@ async def connect_to_mongo():
         maxPoolSize=Settings.MAX_CONNECTIONS_COUNT,
         minPoolSize=Settings.MIN_CONNECTIONS_COUNT,
     )
+    # 调用server_info查询服务器状态，防止服务器异常并未连接成功
+    db.client.server_info()
     logging.info("连接数据库成功！")
 
 

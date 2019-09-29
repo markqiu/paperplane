@@ -4,14 +4,6 @@ from typing import Any
 from .constant import Status
 
 
-class DBData(BaseModel):
-    """数据库数据类"""
-
-    db_name: str  # 数据库名称
-    db_cl: str  # 表名称
-    raw_data: Any  # 原始数据
-
-
 class Account(BaseModel):
     """账户数据类"""
 

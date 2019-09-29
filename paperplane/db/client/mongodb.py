@@ -1,5 +1,5 @@
-from motor.motor_asyncio import AsyncIOMotorClient
-from pymongo.errors import OperationFailure
+from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
+from ...core.settings import Settings
 
 
 class DataBase:
@@ -9,5 +9,9 @@ class DataBase:
 db = DataBase()
 
 
-async def get_database() -> AsyncIOMotorClient:
+def get_client() -> AsyncIOMotorClient:
     return db.client
+
+
+def get_database() -> AsyncIOMotorDatabase:
+    return get_client()[Settings.MONGO_DBNAME]

@@ -5,9 +5,9 @@ from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY
 
 from .core.settings import Settings
 from .version import PROJECT_NAME, description, VERSION
-from .api.v1.routers import router as api_router
+from .api.v1.endpoints.api import router as api_router
 from .core.errors import http_422_error_handler, http_error_handler
-from .core.engine import start_engine
+from .core.engine import start_engine, stop_engine
 from .db.client.mongodb_utils import close_mongo_connection, connect_to_mongo
 
 
@@ -26,6 +26,7 @@ app.add_middleware(
 
 app.add_event_handler("startup", connect_to_mongo)
 app.add_event_handler("startup", start_engine)
+app.add_event_handler("shutdown", stop_engine)
 app.add_event_handler("shutdown", close_mongo_connection)
 
 app.add_exception_handler(HTTPException, http_error_handler)
