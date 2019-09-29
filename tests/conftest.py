@@ -24,11 +24,9 @@ def test_client():
 def test_acount():
     """测试账号"""
     return {
-        "account": {
-            "account_id": "1234567",
-            "assets": 1000000,
-            "available": 0,
-            "market_value": 0,
-            "account_info": "测试账户",
-        }
+        "account_id": "1234567",
+        "assets": 1000000,
+        "available": 0,
+        "market_value": 0,
+        "account_info": "测试账户",
     }

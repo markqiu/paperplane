@@ -32,7 +32,7 @@ def index():
 
 @router.post("/create", response_model=AnyStr)
 async def account_create(
-    account: Account = Body(..., embed=True),
+    account: Account = Body(...),
     db_client: AsyncIOMotorDatabase = Depends(get_database),
 ):
     """创建账户"""
