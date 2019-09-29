@@ -3,5 +3,6 @@ def test_main_engine_start(test_client):
 
 
 def test_create_acccount(test_base_url, test_client, test_acount):
-    result = test_client.post(test_base_url + "/create", test_acount)
-    assert result
+    result = test_client.post(test_base_url + "/create", json=test_acount)
+    assert result.ok
+    assert len(result.text) == 26

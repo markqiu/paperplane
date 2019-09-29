@@ -1,4 +1,5 @@
 import json
+from typing import AnyStr
 from datetime import timedelta
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
@@ -29,17 +30,13 @@ def index():
     return "欢迎使用模拟交易系统, 请参考README.MD 查阅相关文档"
 
 
-@router.post("/create")
-def account_creat(
-    account: Account = Body(...),
+@router.post("/create", response_model=AnyStr)
+async def account_create(
+    account: Account = Body(..., embed=True),
     db_client: AsyncIOMotorDatabase = Depends(get_database),
 ):
     """创建账户"""
-    account_id = create_account(account, db_client)
-    if account_id:
-        return account_id
-    else:
-        return False
+    return await create_account(account, db_client)
 
 
 @router.post("/delete")

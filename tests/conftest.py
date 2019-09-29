@@ -29,6 +29,6 @@ def test_acount():
             "assets": 1000000,
             "available": 0,
             "market_value": 0,
-            "account_info": "",
+            "account_info": "测试账户",
         }
     }

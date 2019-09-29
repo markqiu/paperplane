@@ -11,13 +11,10 @@ from .constants import account_cl, orders_book_cl, position_cl, trade_cl
 """账户操作"""
 
 
-async def create_account(account: Account, db):
+async def create_account(account: Account, db) -> str:
     """创建账户"""
-    try:
-        account_id = await db[account_cl].insert_one(account)
-        return account_id
-    except BaseException:
-        return False
+    result = await db[account_cl].insert_one(account.dict())
+    return str(result.inserted_id)
 
 
 async def is_account_exist(account_id: str, db):
