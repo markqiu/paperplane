@@ -3,6 +3,10 @@ from starlette.testclient import TestClient
 from paperplane.db.client.mongodb import get_database
 from paperplane.core.trade.constants import account_cl
 
+@pytest.fixture(scope="session")
+def test_api_key():
+    return "access_token", "1234567890123456"  # 返回 api_key_name, api_key
+
 
 @pytest.fixture(scope="session")
 def test_base_url():

@@ -2,8 +2,8 @@ from datetime import datetime
 
 try:
     import tushare as ts
-except Exception as e:
-    print(u"请先安装tushare模块")
+except ImportError as e:
+    raise ImportError(u"tushare模块引入报错，请检查tushare是否安装或者安装是否正确!!")
 
 from ..core.settings import Settings
 

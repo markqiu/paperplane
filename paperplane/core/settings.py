@@ -1,7 +1,7 @@
 from typing import Set
 
 from dotenv import load_dotenv
-from pydantic import BaseSettings, Schema
+from pydantic import BaseSettings, Schema, SecretStr
 from pydantic.error_wrappers import ValidationError
 
 from ..models.constant import EngineMode
@@ -16,6 +16,9 @@ class SettingsModel(BaseSettings):
     MAX_CONNECTIONS_COUNT: int
     MIN_CONNECTIONS_COUNT: int
     SECRET_KEY: str
+    API_KEY_NAME: str
+    API_KEY: SecretStr = Schema(..., min_length=16)
+
 
     SENTRY_DSN: str = Schema(None, description="如果需要和sentry打通，可以设置sentry dsn")
 

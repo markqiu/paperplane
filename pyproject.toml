@@ -22,17 +22,42 @@ python-dotenv = "^0.10.3"
 uvicorn = "^0.9.0"
 motor = "^2.0"
 email-validator = "^1.0"
+bs4 = "^0.0.1"
 tushare = "^1.2"
 lxml = "^4.4"
-requests = "^2.22"
-bs4 = "^0.0.1"
+ujson = "^1.35"
 
 [tool.poetry.dev-dependencies]
 pytest = "pytest-mongodb"
 pytest-mongodb = "^2.1"
 mkdocs = "^1.0"
 mkdocs-material = "^4.4"
+requests = "^2.22"
 
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
+
+[tool.black]
+line-length = 160
+target-version = ['py37']
+include = '\.pyi?$'
+exclude = '''
+
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+  | foo.py           # also separately exclude a file named foo.py in
+                     # the root of the project
+)
+'''

@@ -1,14 +1,16 @@
 import json
-from typing import AnyStr
-from datetime import timedelta
+from typing import AnyStr, List
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
-from fastapi import APIRouter, Body, Depends
+from starlette.exceptions import HTTPException
+from fastapi import APIRouter, Body, Depends, Path, Query
+from fastapi.security.api_key import APIKey
+from ....core.apikey import get_api_key
 from ....core.trade.account import (
     order_generate,
     create_account,
     is_account_exist,
-    remove_account,
+    delete_account,
     query_account_list,
     query_account_one,
     query_position,
@@ -21,62 +23,44 @@ from ....core.trade.account import (
 from ....db.client.mongodb import get_database
 from ....models.model import Account
 
-
 router = APIRouter()
 
 
 @router.get("/")
 def index():
-    return "欢迎使用模拟交易系统, 请参考README.MD 查阅相关文档"
+    return "欢迎使用纸飞机模拟交易系统, 请参考README.MD查阅相关文档"
 
 
-@router.post("/create", response_model=AnyStr)
-async def account_create(
-    account: Account = Body(...),
+@router.post("/account", response_model=AnyStr, description="创建一个账户，")
+async def account_create(account: Account = Body(...), api_key: APIKey = Depends(get_api_key), db_client: AsyncIOMotorDatabase = Depends(get_database)):
+    """创建账户"""
+    if not await is_account_exist(account.account_id, db_client):
+        return await create_account(account, db_client)
+    else:
+        raise HTTPException(400, f"账户{account.account_id}已存在！")
+
+
+@router.delete("/account/{account_id}", response_model=bool)
+async def account_delete(account_id: str = Path(...), api_key: APIKey = Depends(get_api_key), db_client: AsyncIOMotorDatabase = Depends(get_database)):
+    """账户删除"""
+    if await is_account_exist(account_id, db_client):
+        return await delete_account(account_id, db_client)
+    else:
+        return False
+
+
+@router.get("/account/list", response_model=List[Account])
+async def account_list(
+    limit: int = Query(20, ge=0, description="限制返回的条数，0=全部"),
+    skip: int = Query(0, ge=0),
+    api_key: APIKey = Depends(get_api_key),
     db_client: AsyncIOMotorDatabase = Depends(get_database),
 ):
-    """创建账户"""
-    return await create_account(account, db_client)
-
-
-@router.post("/delete")
-def account_delete():
-    """账户删除"""
-    rps = {}
-    rps["status"] = True
-
-    if request.form.get("token"):
-        token = request.form["token"]
-        db_client = get_db()
-        result = on_account_delete(token, db_client)
-        if result:
-            rps["data"] = "账户删除成功"
-        else:
-            rps["status"] = False
-            rps["data"] = "删除账户失败"
-    else:
-        rps["status"] = False
-        rps["data"] = "请求参数错误"
-
-    return jsonify(rps)
-
-
-@router.get("/list")
-def account_list():
     """获取账户列表"""
-    rps = {}
-    rps["status"] = True
-
-    db_client = get_db()
-    account_list = query_account_list(db_client)
-
-    if account_list:
-        rps["data"] = account_list
-    else:
-        rps["status"] = False
-        rps["data"] = "账户列表为空"
-
-    return jsonify(rps)
+    account_list = []
+    async for account in query_account_list(limit, skip, db_client):
+        account_list.append(account)
+    return account_list
 
 
 @router.post("/account")

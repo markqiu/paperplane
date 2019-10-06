@@ -30,9 +30,6 @@ coverage:
 	poetry run pytest --cov=app tests/
 
 install:
-	curl http://cxan.chong.so:88/packages/ta-lib-0.4.0-src.tar.gz -o ta-lib-0.4.0-src.tar.gz
-	tar -xzvf ta-lib-0.4.0-src.tar.gz
-	cd ta-lib && ./configure --prefix=/usr/local && make && make install && cd .. && rm -rf ta-lib
 	poetry update
 	poetry install
 

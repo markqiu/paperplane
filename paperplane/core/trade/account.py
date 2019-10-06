@@ -26,9 +26,10 @@ async def is_account_exist(account_id: str, db):
         return False
 
 
-async def remove_account(account_id: str, db):
+async def delete_account(account_id: str, db):
     """账户删除"""
     try:
+        # TODO transcation 支持
         await db[orders_book_cl].delete_many({"account_id": account_id})
         await db[account_cl].delete_many({"account_id": account_id})
         await db[position_cl].delete_many({"account_id": account_id})
@@ -60,13 +61,7 @@ async def on_account_buy(account: dict, order: Order, pos_val: float, db):
     assets = available + pos_val + frozen_all
     result = await db[account_cl].update_one(
         {"account_id": account["account_id"]},
-        {
-            "$set": {
-                "available": round(available, Settings.POINT),
-                "assets": round(assets, Settings.POINT),
-                "market_value": round(pos_val, Settings.POINT),
-            }
-        },
+        {"$set": {"available": round(available, Settings.POINT), "assets": round(assets, Settings.POINT), "market_value": round(pos_val, Settings.POINT)}},
     )
     return result
 
@@ -82,13 +77,7 @@ async def on_account_sell(account: dict, order: Order, pos_val: float, db):
 
     result = await db[account_cl].update_one(
         {"account_id": account["account_id"]},
-        {
-            "$set": {
-                "available": round(available, Settings.POINT),
-                "assets": round(assets, Settings.POINT),
-                "market_value": round(pos_val, Settings.POINT),
-            }
-        },
+        {"$set": {"available": round(available, Settings.POINT), "assets": round(assets, Settings.POINT), "market_value": round(pos_val, Settings.POINT)}},
     )
     return result
 
@@ -104,28 +93,22 @@ async def on_account_liquidation(account_id: str, db):
 
     result = await db[account_cl].update_one(
         {"account_id": account["account_id"]},
-        {
-            "$set": {
-                "available": round(available, Settings.POINT),
-                "assets": round(assets, Settings.POINT),
-                "market_value": round(pos_val, Settings.POINT),
-            }
-        },
+        {"$set": {"available": round(available, Settings.POINT), "assets": round(assets, Settings.POINT), "market_value": round(pos_val, Settings.POINT)}},
     )
     return result
 
 
-async def query_account_list(db):
+async def query_account_list(limit: int, skip: int, db):
     """查询账户列表"""
-    result = await db[account_cl].find()
-    return result
+    cursor = db[account_cl].find({}, limit=limit, skip=skip)
+    async for account in cursor:
+        yield account
 
 
 async def query_account_one(account_id: str, db):
     """查询账户信息"""
     if account_id:
-        result = await db[account_cl].find_one({"account_id": account_id})
-        return result
+        return await db[account_cl].find_one({"account_id": account_id})
 
 
 """订单操作"""
@@ -147,9 +130,7 @@ async def on_orders_insert(order: Order, db):
     account_id = order.account_id
     order.status = Status.NOTTRADED.value
 
-    result = await db[trade_cl].replace_one(
-        {"order_id": order.order_id, "account_id": account_id}, order
-    )
+    result = await db[trade_cl].replace_one({"order_id": order.order_id, "account_id": account_id}, order)
     if result:
         return True, order.order_id
     else:
@@ -204,9 +185,7 @@ async def on_order_deal(order: Order, db):
 
 async def query_order_status(account_id: str, order_id: str, db):
     """查询订单情况"""
-    order = await db[trade_cl].find_one(
-        {"order_id": order_id, "account_id": account_id}
-    )
+    order = await db[trade_cl].find_one({"order_id": order_id, "account_id": account_id})
     if order:
         return True, order["status"]
     else:
@@ -225,9 +204,7 @@ async def query_orders(account_id: str, db):
 
 async def query_order_one(account_id: str, order_id: str, db):
     """查询一条订单数据"""
-    order = await db[trade_cl].find_one(
-        {"order_id": order_id, "account_id": account_id}
-    )
+    order = await db[trade_cl].find_one({"order_id": order_id, "account_id": account_id})
     if order:
         return True, order
     else:
@@ -253,9 +230,7 @@ async def on_orders_book_insert(order: Order, db):
 
 async def on_orders_book_cancel(account_id: str, order_id: str, db):
     """订单撤单"""
-    result = await db[orders_book_cl].delete_one(
-        {"order_id": order_id, "account_id": account_id}
-    )
+    result = await db[orders_book_cl].delete_one({"order_id": order_id, "account_id": account_id})
     if result.deleted_count:
         result, order = await query_order_one(account_id, order_id, db)
         if result:
@@ -281,9 +256,7 @@ async def query_position(account_id: str, db):
 
 async def query_position_one(account_id: str, symbol: str, db):
     """查询某一只证券的持仓"""
-    result = await db[position_cl].find_one(
-        {"account_id": account_id, "pt_symbol": symbol}
-    )
+    result = await db[position_cl].find_one({"account_id": account_id, "pt_symbol": symbol})
     if result:
         return result
     else:
@@ -338,24 +311,13 @@ async def on_position_append(order: Order, db):
     if result:
         volume = pos_o["volume"] + order.traded
         now_price = order.trade_price
-        profit = (
-            (order.trade_price - pos_o["now_price"]) * pos_o["volume"]
-            + pos_o["profit"]
-            - cost
-        )
+        profit = (order.trade_price - pos_o["now_price"]) * pos_o["volume"] + pos_o["profit"] - cost
         available = pos_o["available"] + order.traded
 
         if order.trade_type == TradeType.T_PLUS1.value:
             available = 0
 
-        buy_price = round(
-            (
-                (pos_o["volume"] * pos_o["now_price"])
-                + (order.traded * order.trade_price)
-            )
-            / volume,
-            2,
-        )
+        buy_price = round(((pos_o["volume"] * pos_o["now_price"]) + (order.traded * order.trade_price)) / volume, 2)
 
         return await db[position_cl].update_one(
             {"pt_symbol": order.pt_symbol, "account_id": order.account_id},
@@ -380,31 +342,16 @@ async def on_position_reduce(order: Order, db):
     now_price = order.trade_price
     cost = order.volume * order.trade_price * Settings.COST
     tax = order.volume * order.trade_price * Settings.TAX
-    profit = (
-        (order.trade_price - pos_o["now_price"]) * pos_o["volume"]
-        + pos_o["profit"]
-        - cost
-        - tax
-    )
+    profit = (order.trade_price - pos_o["now_price"]) * pos_o["volume"] + pos_o["profit"] - cost - tax
 
     raw_data = {}
     raw_data["flt"] = {"pt_symbol": order.pt_symbol}
     raw_data["set"] = {
-        "$set": {
-            "volume": round(volume, Settings.POINT),
-            "now_price": round(now_price, Settings.POINT),
-            "profit": round(profit, Settings.POINT),
-        }
+        "$set": {"volume": round(volume, Settings.POINT), "now_price": round(now_price, Settings.POINT), "profit": round(profit, Settings.POINT)}
     }
     return await db[position_cl].update_one(
         {"pt_symbol": order.pt_symbol, "account_id": order.account_id},
-        {
-            "$set": {
-                "volume": round(volume, Settings.POINT),
-                "now_price": round(now_price, Settings.POINT),
-                "profit": round(profit, Settings.POINT),
-            }
-        },
+        {"$set": {"volume": round(volume, Settings.POINT), "now_price": round(now_price, Settings.POINT), "profit": round(profit, Settings.POINT)}},
     )
 
 
@@ -429,14 +376,7 @@ async def on_position_update_price(pos: dict, price: float, db):
         profit = (price - pos["now_price"]) * pos["volume"] + pos["profit"]
 
         return await db[position_cl].update_many(
-            {"pt_symbol": pos["pt_symbol"]},
-            {
-                "$set": {
-                    "now_price": round(price, Settings.POINT),
-                    "profit": round(profit, Settings.POINT),
-                    "available": volume,
-                }
-            },
+            {"pt_symbol": pos["pt_symbol"]}, {"$set": {"now_price": round(price, Settings.POINT), "profit": round(profit, Settings.POINT), "available": volume}}
         )
 
 
@@ -447,10 +387,7 @@ async def on_position_frozen_cancel(account_id: str, pos: dict, db):
         raw_data = {}
         raw_data["flt"] = {"pt_symbol": pos["pt_symbol"]}
         raw_data["set"] = {"$set": {"available": pos["volume"]}}
-        await db[position_cl].update_one(
-            {"pt_symbol": pos["pt_symbol"], "account_id": account_id},
-            {"$set": {"available": pos["volume"]}},
-        )
+        await db[position_cl].update_one({"pt_symbol": pos["pt_symbol"], "account_id": account_id}, {"$set": {"available": pos["volume"]}})
 
 
 """验证操作"""
@@ -502,18 +439,13 @@ async def position_verification(order: Order, db):
 async def on_buy_frozen(account, pay: float, db):
     """买入资金冻结"""
     available = account["available"] - pay
-    return await db[account_cl].update_one(
-        {"account_id": account["account_id"]}, {"$set": {"available": available}}
-    )
+    return await db[account_cl].update_one({"account_id": account["account_id"]}, {"$set": {"available": available}})
 
 
 async def on_sell_frozen(pos, vol: float, db):
     """卖出证券冻结"""
     available = pos["available"] - vol
-    return await db[position_cl].update_one(
-        {"account_id": pos["account_id"], "pt_symbol": pos["pt_symbol"]},
-        {"$set": {"available": available}},
-    )
+    return await db[position_cl].update_one({"account_id": pos["account_id"], "pt_symbol": pos["pt_symbol"]}, {"$set": {"available": available}})
 
 
 async def on_order_cancel(order: Order, db):
@@ -531,19 +463,14 @@ async def on_buy_cancel(order: Order, db):
     pay = (order.volume - order.traded) * order.order_price * (1 + Settings.COST)
     account = await query_account_one(order.account_id, db)
     available = account["available"] + pay
-    return await db[account_cl].update_one(
-        {"account_id": account["account_id"]}, {"$set": {"available": available}}
-    )
+    return await db[account_cl].update_one({"account_id": account["account_id"]}, {"$set": {"available": available}})
 
 
 async def on_sell_cancel(order: Order, db):
     """卖出取消"""
     result, pos = query_position_one(order.account_id, order.pt_symbol, db)
     available = pos["available"] + order.volume - order.traded
-    return await db[position_cl].update_one(
-        {"account_id": pos["account_id"], "pt_symbol": pos["pt_symbol"]},
-        {"$set": {"available": available}},
-    )
+    return await db[position_cl].update_one({"account_id": pos["account_id"], "pt_symbol": pos["pt_symbol"]}, {"$set": {"available": available}})
 
 
 """清算操作"""

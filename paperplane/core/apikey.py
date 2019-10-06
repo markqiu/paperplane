@@ -16,11 +16,11 @@ async def get_api_key(
         api_key_header: str = Security(api_key_header),
         api_key_cookie: str = Security(api_key_cookie),
 ):
-    if api_key_query == Settings.API_KEY:
+    if api_key_query == Settings.API_KEY.get_secret_value():
         return api_key_query
-    elif api_key_header == Settings.API_KEY:
+    elif api_key_header == Settings.API_KEY.get_secret_value():
         return api_key_header
-    elif api_key_cookie == Settings.API_KEY:
+    elif api_key_cookie == Settings.API_KEY.get_secret_value():
         return api_key_cookie
     else:
         raise HTTPException(
