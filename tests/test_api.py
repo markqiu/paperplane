@@ -64,3 +64,15 @@ def test_get_acccount(test_base_url, test_api_key, test_client, test_acount):
     assert result.status_code == 200
     assert result.json()["account_id"] == test_acount["account_id"]
     test_client.delete(test_base_url + f"/account/{test_acount['account_id']}?{test_api_key[0]}={test_api_key[1]}", json=test_acount)
+
+
+def test_pos_query(test_base_url, test_api_key, test_client, test_acount):
+    result = test_client.get(test_base_url + f"/pos/{test_acount['account_id']}?{test_api_key[0]}={test_api_key[1]}")
+    assert result.status_code == 200
+    assert result.json() == []
+
+
+def test_order_query(test_base_url, test_api_key, test_client, test_acount):
+    result = test_client.get(test_base_url + f"/order/{test_acount['account_id']}?{test_api_key[0]}={test_api_key[1]}")
+    assert result.status_code == 200
+    assert result.json() == []

@@ -192,14 +192,10 @@ async def query_order_status(account_id: str, order_id: str, db):
         return False, "无此订单"
 
 
-async def query_orders(account_id: str, db):
+async def query_orders(account_id: str, limit: int, skip: int, db):
     """查询交割单"""
-    orders = await db[trade_cl].find({"account_id": account_id})
-
-    if orders:
-        return orders
-    else:
-        return "无委托记录"
+    async for order in db[trade_cl].find({"account_id": account_id}, limit=limit, skip=skip):
+        yield order
 
 
 async def query_order_one(account_id: str, order_id: str, db):
@@ -245,22 +241,15 @@ async def on_orders_book_cancel(account_id: str, order_id: str, db):
 """持仓操作"""
 
 
-async def query_position(account_id: str, db):
+async def query_position(account_id: str, limit: int, skip: int, db):
     """查询所有持仓信息"""
-    result = await db[position_cl].find({"account_id": account_id})
-    if result:
-        return result
-    else:
-        return "无持仓"
+    async for pos in db[position_cl].find({"account_id": account_id}, limit=limit, skip=skip):
+        yield pos
 
 
 async def query_position_one(account_id: str, symbol: str, db):
     """查询某一只证券的持仓"""
-    result = await db[position_cl].find_one({"account_id": account_id, "pt_symbol": symbol})
-    if result:
-        return result
-    else:
-        return "无持仓"
+    return await db[position_cl].find_one({"account_id": account_id, "pt_symbol": symbol})
 
 
 async def query_position_value(account_id: str, db):

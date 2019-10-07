@@ -21,7 +21,7 @@ from ....core.trade.account import (
     on_liquidation,
 )
 from ....db.client.mongodb import get_database
-from ....models.model import Account
+from ....models.model import Account, Position, Order
 
 router = APIRouter()
 
@@ -64,7 +64,13 @@ async def account_list(
 
 
 @router.get("/account/{account_id}", response_model=Account)
-async def account_query(account_id: str = Path(...), api_key: APIKey = Depends(get_api_key), db_client: AsyncIOMotorDatabase = Depends(get_database)):
+async def account_query(
+    account_id: str = Path(...),
+    limit: int = Query(20, ge=0, description="限制返回的条数，0=全部"),
+    skip: int = Query(0, ge=0),
+    api_key: APIKey = Depends(get_api_key),
+    db_client: AsyncIOMotorDatabase = Depends(get_database),
+):
     """查询账户信息"""
     result = await query_account_one(account_id, db_client)
     if result:
@@ -73,48 +79,34 @@ async def account_query(account_id: str = Path(...), api_key: APIKey = Depends(g
         raise HTTPException(status_code=200, detail=f"查无此账户{account_id}")
 
 
-@router.post("/pos")
-def position_query():
+@router.get("/pos/{account_id}", response_model=List[Position])
+async def position_query(
+    account_id: str = Path(...),
+    limit: int = Query(20, ge=0, description="限制返回的条数，0=全部"),
+    skip: int = Query(0, ge=0),
+    api_key: APIKey = Depends(get_api_key),
+    db_client: AsyncIOMotorDatabase = Depends(get_database),
+):
     """查询持仓信息"""
-    rps = {}
-    rps["status"] = True
-
-    if request.form.get("token"):
-        token = request.form["token"]
-        db_client = get_db()
-        pos = query_position(token, db_client)
-        if pos:
-            rps["data"] = pos
-        else:
-            rps["status"] = False
-            rps["data"] = "查询持仓失败"
-    else:
-        rps["status"] = False
-        rps["data"] = "请求参数错误"
-
-    return jsonify(rps)
+    poss = []
+    async for pos in query_position(account_id, limit, skip, db_client):
+        poss.append(pos)
+    return poss
 
 
-@router.post("/orders")
-def orders_query():
+@router.get("/order/{account_id}", response_model=List[Order])
+async def order_query(
+    account_id: str = Path(...),
+    limit: int = Query(20, ge=0, description="限制返回的条数，0=全部"),
+    skip: int = Query(0, ge=0),
+    api_key: APIKey = Depends(get_api_key),
+    db_client: AsyncIOMotorDatabase = Depends(get_database),
+):
     """查询交割单"""
-    rps = {}
-    rps["status"] = True
-
-    if request.form.get("token"):
-        token = request.form["token"]
-        db_client = get_db()
-        orders = query_orders(token, db_client)
-        if orders:
-            rps["data"] = orders
-        else:
-            rps["status"] = False
-            rps["data"] = "查询交割单失败"
-    else:
-        rps["status"] = False
-        rps["data"] = "请求参数错误"
-
-    return jsonify(rps)
+    orders = []
+    async for order in query_orders(account_id, limit, skip, db_client):
+        orders.append(order)
+    return orders
 
 
 @router.post("/send")
