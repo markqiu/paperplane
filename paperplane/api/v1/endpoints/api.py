@@ -63,26 +63,14 @@ async def account_list(
     return account_list
 
 
-@router.post("/account")
-def account_query():
+@router.get("/account/{account_id}", response_model=Account)
+async def account_query(account_id: str = Path(...), api_key: APIKey = Depends(get_api_key), db_client: AsyncIOMotorDatabase = Depends(get_database)):
     """查询账户信息"""
-    rps = {}
-    rps["status"] = True
-
-    if request.form.get("token"):
-        token = request.form["token"]
-        db_client = get_db()
-        account = query_account_one(token, db_client)
-        if account:
-            rps["data"] = account
-        else:
-            rps["status"] = False
-            rps["data"] = "查询账户失败"
+    result = await query_account_one(account_id, db_client)
+    if result:
+        return result
     else:
-        rps["status"] = False
-        rps["data"] = "请求参数错误"
-
-    return jsonify(rps)
+        raise HTTPException(status_code=200, detail=f"查无此账户{account_id}")
 
 
 @router.post("/pos")
