@@ -6,20 +6,9 @@ from time import sleep
 from .constants import orders_book_cl
 from ..event import Event
 from ..settings import Settings
-from ..trade.account import (
-    order_generate,
-    query_account_list,
-    query_position,
-    on_position_update_price,
-    on_liquidation,
-)
+from ..trade.account import query_account_list, query_position, on_position_update_price, on_liquidation
 from ...models.constant import OrderType, PriceType, TradeType, EngineMode
-from ...models.event import (
-    EVENT_ERROR,
-    EVENT_MARKET_CLOSE,
-    EVENT_ORDER_DEAL,
-    EVENT_ORDER_REJECTED,
-)
+from ...models.event import EVENT_ERROR, EVENT_MARKET_CLOSE, EVENT_ORDER_DEAL, EVENT_ORDER_REJECTED
 from ...models.model import Order, Status
 from ...outside.tushare_api import TushareService
 
@@ -84,10 +73,7 @@ class ChinaAMarket(Exchange):
 
         # 注册验证程序
         if self.match_mode == EngineMode.REALTIME.value:
-            self.verification = {
-                "1": self.product_verification,
-                "2": self.price_verification,
-            }
+            self.verification = {"1": self.product_verification, "2": self.price_verification}
         else:
             self.verification = {"1": self.product_verification}
 
@@ -124,7 +110,7 @@ class ChinaAMarket(Exchange):
 
             # 获取最新的订单
             async for order in self.query_orders_book(db):
-                order = await order_generate(order)
+                order = Order(**order)
                 # 订单验证
                 if not await self.on_back_verification(order):
                     await self.on_orders_book_delete(order, db)
@@ -139,7 +125,7 @@ class ChinaAMarket(Exchange):
         while self._active:
             # 获取最新的订单
             async for order in self.query_orders_book(db):
-                order = await order_generate(order)
+                order = Order(**order)
 
                 # 订单验证
                 if not self.on_back_verification(order):
@@ -197,8 +183,7 @@ class ChinaAMarket(Exchange):
     async def on_orders_book_update(self, order: Order, db):
         """订单薄更新订单"""
         return await db[orders_book_cl].update_one(
-            {"order_id": order.order_id, "account_id": order.account_id},
-            {"$set": {"volume": (order.volume - order.traded), "traded": 0}},
+            {"order_id": order.order_id, "account_id": order.account_id}, {"$set": {"volume": (order.volume - order.traded), "traded": 0}}
         )
 
     async def on_orders_book_delete(self, order: Order, db):
@@ -208,7 +193,7 @@ class ChinaAMarket(Exchange):
     async def on_orders_book_rejected_all(self, db):
         """拒绝所有订单"""
         async for order in self.query_orders_book(db):
-            order = await order_generate(order)
+            order = Order(**order)
             await self.on_orders_book_delete(order, db)
 
             order.status = Status.REJECTED.value
@@ -217,15 +202,11 @@ class ChinaAMarket(Exchange):
             event = Event(EVENT_ORDER_REJECTED, order)
             self.event_engine.put(event)
 
-            logging.info(
-                f"处理订单：账户：{order.account_id}, 订单号：{order.order_id}, 结果：{order.error_msg}"
-            )
+            logging.info(f"处理订单：账户：{order.account_id}, 订单号：{order.order_id}, 结果：{order.error_msg}")
 
     async def on_orders_status_modify(self, order, db):
         """更新订单状态"""
-        return await db[orders_book_cl].update_one(
-            {"order_id": order.order_id}, {"$set": {"status": Status.NOTTRADED.value}}
-        )
+        return await db[orders_book_cl].update_one({"order_id": order.order_id}, {"$set": {"status": Status.NOTTRADED.value}})
 
     async def query_orders_book(self, db, account_id: str = ""):
         """查询订单薄中的订单"""
@@ -245,9 +226,7 @@ class ChinaAMarket(Exchange):
                 event = Event(EVENT_ORDER_REJECTED, order)
                 self.event_engine.put(event)
 
-                logging.info(
-                    f"处理订单：账户：{order.account_id}, 订单号：{order.order_id}, 结果：{msg}"
-                )
+                logging.info(f"处理订单：账户：{order.account_id}, 订单号：{order.order_id}, 结果：{msg}")
 
                 return False
 

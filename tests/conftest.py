@@ -26,6 +26,6 @@ def test_client():
 
 
 @pytest.fixture(scope="session")
-def test_acount():
+def test_account():
     """测试账号"""
-    return {"account_id": "1234567", "assets": 1000000, "available": 0, "market_value": 0, "account_info": "测试账户"}
+    return {"account_id": "1234567", "assets": 1000000, "available": 1000000.0, "market_value": 0, "account_info": "测试账户"}

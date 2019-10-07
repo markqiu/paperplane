@@ -1,5 +1,5 @@
 import json
-from typing import AnyStr, List
+from typing import AnyStr, List, Tuple
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
 from starlette.exceptions import HTTPException
@@ -7,7 +7,6 @@ from fastapi import APIRouter, Body, Depends, Path, Query
 from fastapi.security.api_key import APIKey
 from ....core.apikey import get_api_key
 from ....core.trade.account import (
-    order_generate,
     create_account,
     is_account_exist,
     delete_account,
@@ -109,60 +108,16 @@ async def order_query(
     return orders
 
 
-@router.post("/send")
-def order_arrived():
+@router.post("/order/new", response_model=Tuple[bool, str])
+async def order_new(order: Order = Body(...), api_key: APIKey = Depends(get_api_key), db_client: AsyncIOMotorDatabase = Depends(get_database)):
     """接收订单"""
-    rps = {}
-    rps["status"] = True
-
-    if request.form.get("order"):
-        data = request.form["order"]
-        data = json.loads(data)
-        order = order_generate(data)
-        if order:
-
-            db_client = get_db()
-            result, msg = on_orders_arrived(order, db_client)
-            if result:
-                rps["data"] = msg
-            else:
-                rps["status"] = False
-                rps["data"] = msg
-        else:
-            rps["status"] = False
-            rps["data"] = "订单数据错误"
-    else:
-        rps["status"] = False
-        rps["data"] = "请求参数错误"
-
-    return jsonify(rps)
+    return await on_orders_arrived(order, db_client)
 
 
-@router.post("/cancel")
-def order_cancel():
+@router.delete("/order/{order_id}")
+async def order_cancel(order_id: str = Path(...), api_key: APIKey = Depends(get_api_key), db_client: AsyncIOMotorDatabase = Depends(get_database)):
     """取消订单"""
-    rps = {}
-    rps["status"] = True
-
-    if request.form.get("token"):
-        if request.form.get("order_id"):
-            token = request.form["token"]
-            order_id = request.form["order_id"]
-            db_client = get_db()
-            result = on_orders_book_cancel(token, order_id, db_client)
-            if result:
-                rps["data"] = "撤单成功"
-            else:
-                rps["status"] = False
-                rps["data"] = "撤单失败"
-        else:
-            rps["status"] = False
-            rps["data"] = "请求参数错误"
-    else:
-        rps["status"] = False
-        rps["data"] = "请求参数错误"
-
-    return jsonify(rps)
+    return await on_orders_book_cancel(order_id, db_client)
 
 
 @router.post("/status")

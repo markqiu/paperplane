@@ -129,12 +129,11 @@ async def on_orders_insert(order: Order, db):
     """订单插入"""
     account_id = order.account_id
     order.status = Status.NOTTRADED.value
-
-    result = await db[trade_cl].replace_one({"order_id": order.order_id, "account_id": account_id}, order)
-    if result:
+    try:
+        await db[trade_cl].replace_one({"order_id": order.order_id, "account_id": account_id}, order.dict(), upsert=True)
         return True, order.order_id
-    else:
-        return False, "交易表新增订单失败"
+    except Exception as e:
+        return False, f"交易表新增订单失败{e}"
 
 
 async def on_orders_exist(token: str, order_id: str, db):
@@ -148,7 +147,7 @@ async def on_orders_exist(token: str, order_id: str, db):
 
 async def on_order_update(order: Order, db):
     """订单状态更新"""
-    result, order_old = query_order_one(order.account_id, order.order_id, db)
+    result, order_old = await query_order_one(order.order_id, db)
     result = await db[trade_cl].update_many(
         {"order_id": order.order_id, "account_id": order.account_id},
         {
@@ -198,9 +197,9 @@ async def query_orders(account_id: str, limit: int, skip: int, db):
         yield order
 
 
-async def query_order_one(account_id: str, order_id: str, db):
+async def query_order_one(order_id: str, db):
     """查询一条订单数据"""
-    order = await db[trade_cl].find_one({"order_id": order_id, "account_id": account_id})
+    order = await db[trade_cl].find_one({"order_id": order_id})
     if order:
         return True, order
     else:
@@ -213,24 +212,21 @@ async def query_order_one(account_id: str, order_id: str, db):
 async def on_orders_book_insert(order: Order, db):
     """订单薄插入订单"""
     order.order_id = str(time.time())
-
-    raw_data = {}
-    raw_data["flt"] = {"order_id": order.order_id}
-    raw_data["data"] = order
-    result = await db[orders_book_cl].insert_one(order)
+    order.status = order.status.value
+    result = await db[orders_book_cl].insert_one(order.dict())
     if result:
-        return on_orders_insert(order, db)
+        return await on_orders_insert(order, db)
     else:
         return False, "订单薄新增订单失败"
 
 
-async def on_orders_book_cancel(account_id: str, order_id: str, db):
+async def on_orders_book_cancel(order_id: str, db):
     """订单撤单"""
-    result = await db[orders_book_cl].delete_one({"order_id": order_id, "account_id": account_id})
+    result = await db[orders_book_cl].delete_one({"order_id": order_id})
     if result.deleted_count:
-        result, order = await query_order_one(account_id, order_id, db)
+        result, order = await query_order_one(order_id, db)
         if result:
-            order = await order_generate(order)
+            order = Order(**order)
             order.status = Status.CANCELLED.value
             await on_order_cancel(order, db)
         return True
@@ -474,29 +470,3 @@ async def on_liquidation(account_id: str, db, price_dict: dict = None):
     await on_account_liquidation(account_id, db)
 
     return True
-
-
-async def order_generate(d: dict):
-    """订单生成器"""
-    try:
-        order = Order(
-            code=d["code"],
-            exchange=d["exchange"],
-            account_id=d["account_id"],
-            order_id=d["order_id"],
-            product=d["product"],
-            order_type=d["order_type"],
-            price_type=d["price_type"],
-            trade_type=d["trade_type"],
-            order_price=d["order_price"],
-            trade_price=d["trade_price"],
-            volume=d["volume"],
-            traded=d["traded"],
-            status=d["status"],
-            order_date=d["order_date"],
-            order_time=d["order_time"],
-            error_msg=d["error_msg"],
-        )
-        return order
-    except Exception:
-        raise ValueError("订单数据有误")

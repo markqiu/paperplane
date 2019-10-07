@@ -6,7 +6,7 @@
     "id": null,
     "account_id": "1234567",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -17,7 +17,7 @@
     "id": null,
     "account_id": "1234568",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -28,7 +28,7 @@
     "id": null,
     "account_id": "1234569",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -39,7 +39,7 @@
     "id": null,
     "account_id": "1234560",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -50,7 +50,7 @@
     "id": null,
     "account_id": "1234564",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -61,7 +61,7 @@
     "id": null,
     "account_id": "1234565",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -72,7 +72,7 @@
     "id": null,
     "account_id": "1234566",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -83,7 +83,7 @@
     "id": null,
     "account_id": "12345677",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -94,7 +94,7 @@
     "id": null,
     "account_id": "12345678",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -105,7 +105,7 @@
     "id": null,
     "account_id": "12345601",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -116,7 +116,7 @@
     "id": null,
     "account_id": "12345617",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -127,7 +127,7 @@
     "id": null,
     "account_id": "12345627",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -138,7 +138,7 @@
     "id": null,
     "account_id": "1234537",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -149,7 +149,7 @@
     "id": null,
     "account_id": "12345647",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -160,7 +160,7 @@
     "id": null,
     "account_id": "1234557",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -171,7 +171,7 @@
     "id": null,
     "account_id": "1234147",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -182,7 +182,7 @@
     "id": null,
     "account_id": "1234257",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -193,7 +193,7 @@
     "id": null,
     "account_id": "1234357",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -204,7 +204,7 @@
     "id": null,
     "account_id": "1234457",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -215,7 +215,7 @@
     "id": null,
     "account_id": "1234557",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -226,7 +226,7 @@
     "id": null,
     "account_id": "1234657",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -237,7 +237,7 @@
     "id": null,
     "account_id": "1234757",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -248,7 +248,7 @@
     "id": null,
     "account_id": "1234857",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   },
@@ -259,7 +259,7 @@
     "id": null,
     "account_id": "1234557",
     "assets": 1000000.0,
-    "available": 0.0,
+    "available": 1000000.0,
     "market_value": 0.0,
     "account_info": "测试账户"
   }
