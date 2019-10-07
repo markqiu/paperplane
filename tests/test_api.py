@@ -110,3 +110,30 @@ def test_order_cancel(test_base_url, test_api_key, test_client, test_account):
     assert result.status_code == 200
     assert result.json() == True
     test_client.delete(test_base_url + f"/account/{test_account['account_id']}?{test_api_key[0]}={test_api_key[1]}", json=test_account)
+    asyncio.get_event_loop().run_until_complete(db[trade_cl].delete_many({}))
+    asyncio.get_event_loop().run_until_complete(db[orders_book_cl].delete_many({}))
+
+
+def test_order_status_query(test_base_url, test_api_key, test_client, test_account):
+    json = ujson.load(open("tests/fixtures/order.json"))
+    db = get_database()
+    asyncio.get_event_loop().run_until_complete(db[trade_cl].insert_many(json))
+    asyncio.get_event_loop().run_until_complete(db[orders_book_cl].insert_many(json))
+    result = test_client.get(test_base_url + f"/order/{json[1]['order_id']}/status?{test_api_key[0]}={test_api_key[1]}")
+    assert result.status_code == 200
+    assert result.json() == [True, json[1]["status"]]
+    asyncio.get_event_loop().run_until_complete(db[trade_cl].delete_many({}))
+    asyncio.get_event_loop().run_until_complete(db[orders_book_cl].delete_many({}))
+
+
+def test_liquidation(test_base_url, test_api_key, test_client, test_account):
+    json = ujson.load(open("tests/fixtures/order.json"))
+    db = get_database()
+    asyncio.get_event_loop().run_until_complete(db[trade_cl].insert_many(json))
+    asyncio.get_event_loop().run_until_complete(db[orders_book_cl].insert_many(json))
+    test_client.post(test_base_url + f"/account?{test_api_key[0]}={test_api_key[1]}", json=test_account)
+    result = test_client.get(test_base_url + f"/liquidation/{json[1]['account_id']}?{test_api_key[0]}={test_api_key[1]}")
+    assert result.status_code == 200
+    assert result.json() == True
+    asyncio.get_event_loop().run_until_complete(db[trade_cl].delete_many({}))
+    asyncio.get_event_loop().run_until_complete(db[orders_book_cl].delete_many({}))

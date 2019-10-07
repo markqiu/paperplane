@@ -120,65 +120,14 @@ async def order_cancel(order_id: str = Path(...), api_key: APIKey = Depends(get_
     return await on_orders_book_cancel(order_id, db_client)
 
 
-@router.post("/status")
-def get_status():
+@router.get("/order/{order_id}/status")
+async def get_status(order_id: str = Path(...), api_key: APIKey = Depends(get_api_key), db_client: AsyncIOMotorDatabase = Depends(get_database)):
     """查询订单状态"""
-    rps = {}
-    rps["status"] = True
-
-    if request.form.get("token"):
-        if request.form.get("order_id"):
-            token = request.form["token"]
-            order_id = request.form["order_id"]
-            db_client = get_db()
-            result, order_status = query_order_status(token, order_id, db_client)
-            if result:
-                rps["data"] = order_status
-            else:
-                rps["status"] = False
-                rps["data"] = order_status
-        else:
-            rps["status"] = False
-            rps["data"] = "请求参数错误"
-    else:
-        rps["status"] = False
-        rps["data"] = "请求参数错误"
-
-    return jsonify(rps)
+    return await query_order_status(order_id, db_client)
 
 
-@router.post("/liquidation")
-def liquidation():
+@router.get("/liquidation/{account_id}")
+async def liquidation(account_id: str = Path(...), api_key: APIKey = Depends(get_api_key), db_client: AsyncIOMotorDatabase = Depends(get_database)):
     """清算"""
-    rps = {}
-    rps["status"] = True
-
-    if request.form.get("token"):
-        token = request.form["token"]
-        price_dict = {}
-        if request.form.get("price_dict"):
-            price_dict = request.form.get("price_dict")
-            price_dict = json.loads(price_dict)
-        else:
-            if not request.form.get("price_dict") == []:
-                rps["status"] = False
-                rps["data"] = "请求参数错误"
-                return jsonify(rps)
-
-        db_client = get_db()
-        if on_account_exist(token, db_client):
-            result = on_liquidation(db_client, token, price_dict)
-            if result:
-                rps["data"] = "清算完成"
-            else:
-                rps["status"] = False
-                rps["data"] = "清算失败"
-
-        else:
-            rps["status"] = False
-            rps["data"] = "账户信息不存在"
-    else:
-        rps["status"] = False
-        rps["data"] = "请求参数错误"
-
-    return jsonify(rps)
+    if is_account_exist(account_id, db_client):
+        return await on_liquidation(account_id, db_client)

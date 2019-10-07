@@ -182,9 +182,9 @@ async def on_order_deal(order: Order, db):
     await on_order_update(order, db)
 
 
-async def query_order_status(account_id: str, order_id: str, db):
+async def query_order_status(order_id: str, db):
     """查询订单情况"""
-    order = await db[trade_cl].find_one({"order_id": order_id, "account_id": account_id})
+    order = await db[trade_cl].find_one({"order_id": order_id})
     if order:
         return True, order["status"]
     else:
@@ -250,14 +250,10 @@ async def query_position_one(account_id: str, symbol: str, db):
 
 async def query_position_value(account_id: str, db):
     """查询账户市值"""
-    pos = query_position(account_id, db)
-
-    if pos != "无持仓":
-        df = pd.DataFrame(list(pos))
-        df["value"] = df["volume"] * df["now_price"]
-        return float(df["value"].sum())
-    else:
-        return 0
+    value = 0
+    async for pos in query_position(account_id, 0, 0, db):
+        value += pos["volume"] * pos["now_price"]
+    return value
 
 
 async def on_position_insert(order: Order, cost: float, db):
@@ -340,18 +336,18 @@ async def on_position_reduce(order: Order, db):
     )
 
 
-async def on_position_liquidation(account_id, db, price_dict: dict = None):
+async def on_position_liquidation(account_id, db):
     """持仓清算"""
-    pos_list = await query_position(account_id, db)
-    if isinstance(pos_list, list):
-        for pos in pos_list:
-            if price_dict:
-                if pos["pt_symbol"] in price_dict.keys():
-                    # 更新最新价格
-                    new_price = price_dict.get(pos["pt_symbol"])
-                    await on_position_update_price(pos, new_price, db)
-            # 解除账户冻结
-            await on_position_frozen_cancel(account_id, pos, db)
+    from ...core.engine import me
+
+    async for pos in query_position(account_id, 0, 0, db):
+        hq = me._market.hq_client.get_realtime_data(pos["pt_symbol"])
+        if hq is not None:
+            now_price = float(hq.loc[0, "price"])
+            # 更新收盘行情
+            await on_position_update_price(pos, now_price, db)
+        # 解除账户冻结
+        await on_position_frozen_cancel(account_id, pos, db)
 
 
 async def on_position_update_price(pos: dict, price: float, db):
@@ -461,10 +457,10 @@ async def on_sell_cancel(order: Order, db):
 """清算操作"""
 
 
-async def on_liquidation(account_id: str, db, price_dict: dict = None):
+async def on_liquidation(account_id: str, db):
     """清算"""
     # 更新所有持仓最新价格和冻结证券
-    await on_position_liquidation(account_id, db, price_dict)
+    await on_position_liquidation(account_id, db)
 
     # 更新账户市值和冻结资金
     await on_account_liquidation(account_id, db)

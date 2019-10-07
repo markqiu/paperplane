@@ -281,18 +281,13 @@ class ChinaAMarket(Exchange):
 
     async def on_liquidation(self, db):
         """获取收盘数据"""
-        accounts = await query_account_list(db)
-
-        if accounts:
-            for account_id in accounts:
-                pos_list = query_position(account_id, db)
-                if isinstance(pos_list, list):
-                    for pos in pos_list:
-                        hq = self.hq_client.get_realtime_data(pos["pt_symbol"])
-                        if hq is not None:
-                            now_price = float(hq.loc[0, "price"])
-                            # 更新收盘行情
-                            await on_position_update_price(pos, now_price, db)
-                # 清算
-                await on_liquidation(db, account_id)
+        async for account in query_account_list(0, 0, db):
+            async for pos in query_position(account.account_id, 0, 0, db):
+                hq = self.hq_client.get_realtime_data(pos["pt_symbol"])
+                if hq is not None:
+                    now_price = float(hq.loc[0, "price"])
+                    # 更新收盘行情
+                    await on_position_update_price(pos, now_price, db)
+            # 清算
+            await on_liquidation(account.account_id, db)
         logging.info(f"{self.market_name}: 账户与持仓清算完成")
