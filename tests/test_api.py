@@ -14,34 +14,46 @@ def test_api_key(test_client, test_account):
     assert "errors" in result.json()
     result = test_client[0].post(f"account?{test_client[1]}={test_client[2]}", json=test_account)
     assert result.status_code == 200
-    assert "errors" not in result.json()
-    test_client[0].delete(f"account/{test_account['account_id']}?{test_client[1]}={test_client[2]}", json=test_account)
+    assert result.json() is True
+    test_client[0].delete(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
 
 
 def test_create_acccount(test_client, test_account):
     result = test_client[0].post(f"account?{test_client[1]}={test_client[2]}", json=test_account)
     assert result.status_code == 200
-    assert "errors" not in result.json()
+    assert result.json() is True
     result = test_client[0].post(f"account?{test_client[1]}={test_client[2]}", json=test_account)
     assert result.status_code == 200
     assert "errors" in result.json()
-    assert result.json()["errors"][0] == f"账户{test_account['account_id']}已存在！"
-    test_client[0].delete(f"account/{test_account['account_id']}?{test_client[1]}={test_client[2]}", json=test_account)
+    assert result.json()["errors"][0] == f"账户{test_account['account']['account_id']}已存在！"
+    test_client[0].delete(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
+
+
+def test_create_acccount_with_position(test_client, test_account_with_position):
+    result = test_client[0].post(f"account?{test_client[1]}={test_client[2]}", json=test_account_with_position)
+    assert result.status_code == 200
+    assert result.json() is True
+    result = test_client[0].get(f"pos/{test_account_with_position['account']['account_id']}?{test_client[1]}={test_client[2]}")
+    assert result.status_code == 200
+    assert result.json()[0]["code"] == test_account_with_position["position"][0]["code"]
+    result = test_client[0].post(f"account?{test_client[1]}={test_client[2]}", json=test_account_with_position)
+    assert result.status_code == 200
+    assert "errors" in result.json()
+    assert result.json()["errors"][0] == f"账户{test_account_with_position['account']['account_id']}已存在！"
+    test_client[0].delete(f"account/{test_account_with_position['account']['account_id']}?{test_client[1]}={test_client[2]}")
 
 
 def test_delete_acccount(test_client, test_account):
     test_client[0].post(f"account?{test_client[1]}={test_client[2]}", json=test_account)
-
-    result = test_client[0].delete(f"account/{test_account['account_id']}?{test_client[1]}={test_client[2]}", json=test_account)
+    result = test_client[0].delete(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
     assert result.status_code == 200
-    assert result.json()
-    result = test_client[0].delete(f"account/{test_account['account_id']}?{test_client[1]}={test_client[2]}", json=test_account)
+    assert result.json() is True
+    result = test_client[0].delete(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
     assert result.status_code == 200
     assert not result.json()
 
 
 def test_list_acccount(test_client, test_account):
-
     json = ujson.load(open("tests/fixtures/account.json"))
     db = get_database()
     asyncio.get_event_loop().run_until_complete(db[account_cl].insert_many(json))
@@ -65,14 +77,14 @@ def test_list_acccount(test_client, test_account):
 
 def test_get_acccount(test_client, test_account):
     test_client[0].post(f"account?{test_client[1]}={test_client[2]}", json=test_account)
-    result = test_client[0].get(f"account/{test_account['account_id']}?{test_client[1]}={test_client[2]}")
+    result = test_client[0].get(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
     assert result.status_code == 200
-    assert result.json()["account_id"] == test_account["account_id"]
-    test_client[0].delete(f"account/{test_account['account_id']}?{test_client[1]}={test_client[2]}", json=test_account)
+    assert result.json()["account_id"] == test_account["account"]["account_id"]
+    test_client[0].delete(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
 
 
 def test_pos_query(test_client, test_account):
-    result = test_client[0].get(f"pos/{test_account['account_id']}?{test_client[1]}={test_client[2]}")
+    result = test_client[0].get(f"pos/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
     assert result.status_code == 200
     assert result.json() == []
 
@@ -82,7 +94,7 @@ def test_order_query(test_client, test_account):
     db = get_database()
     asyncio.get_event_loop().run_until_complete(db[trade_cl].insert_many(json))
     asyncio.get_event_loop().run_until_complete(db[orders_book_cl].insert_many(json))
-    result = test_client[0].get(f"order/{test_account['account_id']}?{test_client[1]}={test_client[2]}")
+    result = test_client[0].get(f"order/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
     assert result.status_code == 200
     i = 0
     for order in result.json():
@@ -101,7 +113,7 @@ def test_order_new(test_client, test_account):
     result = test_client[0].post(f"order/new?{test_client[1]}={test_client[2]}", json=json[0])
     assert result.status_code == 200
     assert result.json()[0] == True
-    test_client[0].delete(f"account/{test_account['account_id']}?{test_client[1]}={test_client[2]}", json=test_account)
+    test_client[0].delete(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
 
 
 def test_order_cancel(test_client, test_account):
@@ -113,7 +125,7 @@ def test_order_cancel(test_client, test_account):
     result = test_client[0].delete(f"order/{json[1]['order_id']}?{test_client[1]}={test_client[2]}")
     assert result.status_code == 200
     assert result.json() == True
-    test_client[0].delete(f"account/{test_account['account_id']}?{test_client[1]}={test_client[2]}", json=test_account)
+    test_client[0].delete(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
     asyncio.get_event_loop().run_until_complete(db[trade_cl].delete_many({}))
     asyncio.get_event_loop().run_until_complete(db[orders_book_cl].delete_many({}))
 

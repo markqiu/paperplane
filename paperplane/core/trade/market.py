@@ -137,7 +137,7 @@ class ChinaAMarket(Exchange):
 
     async def on_orders_match(self, order: Order, db):
         """订单撮合"""
-        hq = self.hq_client.get_realtime_data(order.pt_symbol)
+        hq = self.hq_client.get_realtime_data(f"{order.code}.{order.exchange}")
 
         if hq is not None:
             now_price = float(hq.loc[0, "price"])
@@ -283,7 +283,7 @@ class ChinaAMarket(Exchange):
         """获取收盘数据"""
         async for account in query_account_list(0, 0, db):
             async for pos in query_position(account.account_id, 0, 0, db):
-                hq = self.hq_client.get_realtime_data(pos["pt_symbol"])
+                hq = self.hq_client.get_realtime_data(f"{pos.code}.{pos.exchange}")
                 if hq is not None:
                     now_price = float(hq.loc[0, "price"])
                     # 更新收盘行情

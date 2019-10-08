@@ -911,7 +911,7 @@ type = "legacy"
 url = "https://pypi.tuna.tsinghua.edu.cn/simple"
 
 [metadata]
-content-hash = "70b0a75373e29d26928c32cde94da8f62207001f1225846f460931e94fc56742"
+content-hash = "cd5c9264824242331e53324ddc11703f6a66c8597832af36e28b6f89e2c62a67"
 python-versions = "^3.7"
 
 [metadata.hashes]

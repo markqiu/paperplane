@@ -1,36 +1,38 @@
-from pydantic import BaseModel
-from typing import Any
+from pydantic import BaseModel, Schema
 
 from .constant import Status
 from .model_mixin import DBModelMixin
 
 
-class Account(DBModelMixin):
+class AccountNew(BaseModel):
     """账户数据类"""
 
-    account_id: str  # 账户外部编号
-    assets: float = 0  # 总资产
-    available: float = 0  # 可用资金
-    market_value: float = 0  # 总市值
-    account_info: str = ""  # 账户描述信息
+    account_id: str = Schema(..., description="外部账户编号, 必须提供，用于对应外部系统的账户")
+    available: float = Schema(1000000, description="可用资金, 缺省为100万")
+    account_info: str = Schema("", description="账户描述信息")
+    market_value: float = Schema(0, description="总市值, 缺省为0，如果不为0，则必须传持仓数据")
 
 
-class Position(DBModelMixin):
+class AccountInDB(DBModelMixin, AccountNew):
+    """账户数据类"""
+
+    assets: float = Schema(..., description="总资产，缺省等于可用资金+总市值。")
+
+
+class PositionNew(BaseModel):
+    code: str = Schema(..., description="证券代码")
+    exchange: str = Schema(..., description="交易所代码")
+    volume: float = Schema(..., description="总持仓")
+    cost_price: float = Schema(..., description="成本均价")
+
+
+class PositionInDB(DBModelMixin, PositionNew):
     """持仓数据类"""
 
-    code: str
-    exchange: str
-    account_id: str  # 账户编号
-    buy_date: str = 0  # 买入日期
-    volume: float = 0  # 总持仓
-    available: float = 0  # 可用持仓
-    buy_price: float = 0  # 买入均价
-    now_price: float = 0  # 当前价格
-    profit: float = 0  # 收益
-
-    def __post_init__(self):
-        """"""
-        self.pt_symbol = f"{self.code}.{self.exchange}"
+    account_id: str = Schema(..., description="外部账户编号, 必须提供，用于对应外部系统的账户")
+    available: float = Schema(..., description="可用持仓")
+    now_price: float = Schema(..., description="当前价格")
+    profit: float = Schema(..., description="收益")
 
 
 class Order(DBModelMixin):
@@ -52,7 +54,3 @@ class Order(DBModelMixin):
     order_date: str = ""
     order_time: str = ""
     error_msg: str = ""
-
-    def __post_init__(self):
-        """"""
-        self.pt_symbol = f"{self.code}.{self.exchange}"
