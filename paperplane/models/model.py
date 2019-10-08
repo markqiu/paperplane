@@ -7,6 +7,7 @@ from .model_mixin import DBModelMixin
 
 class Account(DBModelMixin):
     """账户数据类"""
+
     account_id: str  # 账户外部编号
     assets: float = 0  # 总资产
     available: float = 0  # 可用资金
@@ -16,6 +17,7 @@ class Account(DBModelMixin):
 
 class Position(DBModelMixin):
     """持仓数据类"""
+
     code: str
     exchange: str
     account_id: str  # 账户编号
@@ -33,6 +35,7 @@ class Position(DBModelMixin):
 
 class Order(DBModelMixin):
     """订单数据类"""
+
     code: str
     exchange: str
     account_id: str  # 账户编号

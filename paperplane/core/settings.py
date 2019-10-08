@@ -19,7 +19,6 @@ class SettingsModel(BaseSettings):
     API_KEY_NAME: str
     API_KEY: SecretStr = Schema(..., min_length=16)
 
-
     SENTRY_DSN: str = Schema(None, description="如果需要和sentry打通，可以设置sentry dsn")
 
     ALLOWED_HOSTS: Set[str] = set()

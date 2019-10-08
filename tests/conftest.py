@@ -2,16 +2,7 @@ import pytest
 from starlette.testclient import TestClient
 from paperplane.db.client.mongodb import get_database
 from paperplane.core.trade.constants import account_cl
-
-
-@pytest.fixture(scope="session")
-def test_api_key():
-    return "access_token", "1234567890123456"  # 返回 api_key_name, api_key
-
-
-@pytest.fixture(scope="session")
-def test_base_url():
-    return "/api/v1"
+from paperplane.core.settings import Settings
 
 
 @pytest.fixture(scope="session")
@@ -19,8 +10,8 @@ def test_client():
     """启动服务和撮合引擎"""
     from paperplane.main import app
 
-    with TestClient(app) as test_client:
-        yield test_client
+    with TestClient(app, base_url="http://testserver" + Settings.API_BASE_URL + "/") as test_client:
+        yield test_client, Settings.API_KEY_NAME, Settings.API_KEY.get_secret_value()  # 返回 testclient, api_key_name, api_key
         db = get_database()
         db[account_cl].delete_many({})
 
