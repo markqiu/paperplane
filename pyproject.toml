@@ -14,7 +14,7 @@ url = 'http://cxan.chong.so:88/simple/'
 
 [tool.poetry.dependencies]
 python = "^3.7"
-fastapi = "^0.38.1"
+fastapi = "^0.41.0"
 pandas = "^0.25.1"
 numpy = "^1.17"
 pytdx = "^1.72"

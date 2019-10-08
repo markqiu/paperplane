@@ -1,12 +1,9 @@
 import time
 
-import pandas as pd
-
+from .constants import account_cl, orders_book_cl, position_cl, trade_cl
 from ..settings import Settings
 from ...models.constant import Status, OrderType, TradeType
 from ...models.model import Account, Position, Order
-from .constants import account_cl, orders_book_cl, position_cl, trade_cl
-
 
 """账户操作"""
 
@@ -215,7 +212,7 @@ async def on_orders_book_insert(order: Order, db):
     order.status = order.status.value
     result = await db[orders_book_cl].insert_one(order.dict())
     if result:
-        return await on_orders_insert(order, db)
+        return True, await on_orders_insert(order, db)
     else:
         return False, "订单薄新增订单失败"
 
@@ -457,7 +454,7 @@ async def on_sell_cancel(order: Order, db):
 """清算操作"""
 
 
-async def on_liquidation(account_id: str, db):
+async def on_liquidation(account_id: str, db) -> bool:
     """清算"""
     # 更新所有持仓最新价格和冻结证券
     await on_position_liquidation(account_id, db)

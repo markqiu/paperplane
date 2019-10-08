@@ -1,10 +1,10 @@
-import json
-from typing import AnyStr, List, Tuple
-from motor.motor_asyncio import AsyncIOMotorDatabase
+from typing import AnyStr, List
 
-from starlette.exceptions import HTTPException
 from fastapi import APIRouter, Body, Depends, Path, Query
 from fastapi.security.api_key import APIKey
+from motor.motor_asyncio import AsyncIOMotorDatabase
+from starlette.exceptions import HTTPException
+
 from ....core.apikey import get_api_key
 from ....core.trade.account import (
     create_account,
@@ -108,7 +108,7 @@ async def order_query(
     return orders
 
 
-@router.post("/order/new", response_model=Tuple[bool, str])
+@router.post("/order/new")
 async def order_new(order: Order = Body(...), api_key: APIKey = Depends(get_api_key), db_client: AsyncIOMotorDatabase = Depends(get_database)):
     """接收订单"""
     return await on_orders_arrived(order, db_client)
@@ -121,13 +121,13 @@ async def order_cancel(order_id: str = Path(...), api_key: APIKey = Depends(get_
 
 
 @router.get("/order/{order_id}/status")
-async def get_status(order_id: str = Path(...), api_key: APIKey = Depends(get_api_key), db_client: AsyncIOMotorDatabase = Depends(get_database)):
+async def order_get_status(order_id: str = Path(...), api_key: APIKey = Depends(get_api_key), db_client: AsyncIOMotorDatabase = Depends(get_database)):
     """查询订单状态"""
     return await query_order_status(order_id, db_client)
 
 
-@router.get("/liquidation/{account_id}")
-async def liquidation(account_id: str = Path(...), api_key: APIKey = Depends(get_api_key), db_client: AsyncIOMotorDatabase = Depends(get_database)):
+@router.get("/liquidation/{account_id}", response_model=bool)
+async def liquidation_trigger(account_id: str = Path(...), api_key: APIKey = Depends(get_api_key), db_client: AsyncIOMotorDatabase = Depends(get_database)):
     """清算"""
     if is_account_exist(account_id, db_client):
         return await on_liquidation(account_id, db_client)
