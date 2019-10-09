@@ -4,18 +4,18 @@ Event-driven framework of vn.py framework.
 
 from collections import defaultdict
 from queue import Empty, Queue
+from threading import Thread
 from time import sleep
 from typing import Any, Callable
-from fastapi import BackgroundTasks
 
 EVENT_TIMER = "eTimer"
 
 
 class Event:
     """
-    Event object consists of a type string which is used 
-    by event engine for distributing event, and a data 
-    object which contains the real data. 
+    Event object consists of a type string which is used
+    by event engine for distributing event, and a data
+    object which contains the real data.
     """
 
     def __init__(self, type: str, data: Any = None):
@@ -30,7 +30,7 @@ HandlerType = Callable[[Event], None]
 
 class EventEngine:
     """
-    Event engine distributes event object based on its type 
+    Event engine distributes event object based on its type
     to those handlers registered.
 
     It also generates timer event by every interval seconds,
@@ -45,8 +45,8 @@ class EventEngine:
         self._interval = interval
         self._queue = Queue()
         self._active = False
-        tasks_pool = BackgroundTasks()
-        self._tasks_pool = tasks_pool
+        self._thread = Thread(target=self._run)
+        self._timer = Thread(target=self._run_timer)
         self._handlers = defaultdict(list)
         self._general_handlers = []
 
@@ -64,7 +64,7 @@ class EventEngine:
     def _process(self, event: Event):
         """
         First ditribute event to those handlers registered listening
-        to this type. 
+        to this type.
 
         Then distrubute event to those general handlers which listens
         to all types.
@@ -89,14 +89,16 @@ class EventEngine:
         Start event engine to process events and generate timer events.
         """
         self._active = True
-        self._tasks_pool.add_task(self._run)
-        self._tasks_pool.add_task(self._run_timer)
+        self._thread.start()
+        self._timer.start()
 
     def stop(self):
         """
         Stop event engine.
         """
         self._active = False
+        self._thread.join(3)
+        self._timer.join(3)
 
     def put(self, event: Event):
         """
@@ -106,7 +108,7 @@ class EventEngine:
 
     def register(self, type: str, handler: HandlerType):
         """
-        Register a new handler function for a specific event type. Every 
+        Register a new handler function for a specific event type. Every
         function can only be registered once for each event type.
         """
         handler_list = self._handlers[type]
@@ -127,7 +129,7 @@ class EventEngine:
 
     def register_general(self, handler: HandlerType):
         """
-        Register a new handler function for all event types. Every 
+        Register a new handler function for all event types. Every
         function can only be registered once for each event type.
         """
         if handler not in self._general_handlers:

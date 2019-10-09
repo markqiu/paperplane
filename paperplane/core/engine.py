@@ -1,17 +1,13 @@
 import logging
 from abc import ABC
-from fastapi import BackgroundTasks
+from threading import Thread
+import asyncio
 
 from ..core.event import EventEngine
 from ..core.trade.account import on_order_deal, on_order_cancel
 from ..core.trade.market import Exchange, ChinaAMarket
 from ..db.client.mongodb import get_client, get_database
-from ..models.event import (
-    EVENT_ERROR,
-    EVENT_MARKET_CLOSE,
-    EVENT_ORDER_DEAL,
-    EVENT_ORDER_REJECTED,
-)
+from ..models.event import EVENT_ERROR, EVENT_MARKET_CLOSE, EVENT_ORDER_DEAL, EVENT_ORDER_REJECTED
 
 
 class MainEngine:
@@ -31,8 +27,9 @@ class MainEngine:
         # 开启邮件引擎
         # TODO
 
-        # 初始化后台任务
-        self._market_match = BackgroundTasks()
+        # 市场交易线程
+        event_loop = asyncio.get_event_loop()
+        self._thread = Thread(target=self._run, args=(event_loop,))
 
         # 注册事件监听
         self.event_register()
@@ -61,16 +58,22 @@ class MainEngine:
         self._db = get_database()
 
         # 启动订单薄撮合程序
-        self._market_match.add_task(self._market.on_match, self._db)
+        self._thread.start()
 
         return True
 
+    def _run(self, event_loop: asyncio.BaseEventLoop):
+        """订单薄撮合程序启动"""
+        asyncio.set_event_loop(event_loop)
+        asyncio.ensure_future(self._market.on_match(self._db))
+
     def _close(self):
         """模拟交易引擎关闭"""
+        # 关闭市场
+        self._thread.join(3)
+
         # 关闭数据库
         self._dbclient.close()
-        # TODO 找到关闭backgroundtask的方法
-        del self._market_match
 
         logging.info("模拟交易主引擎：关闭")
 

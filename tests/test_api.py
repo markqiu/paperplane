@@ -84,9 +84,16 @@ def test_get_acccount(test_client, test_account):
 
 
 def test_pos_query(test_client, test_account):
+    json = ujson.load(open("tests/fixtures/order.json"))
+    test_client[0].post(f"account?{test_client[1]}={test_client[2]}", json=test_account)
+    result = test_client[0].post(f"order/new?{test_client[1]}={test_client[2]}", json=json[0])
+    assert result.status_code == 200
+    assert result.json()[0] is True
+
     result = test_client[0].get(f"pos/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
     assert result.status_code == 200
     assert result.json() == []
+    test_client[0].delete(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
 
 
 def test_order_query(test_client, test_account):

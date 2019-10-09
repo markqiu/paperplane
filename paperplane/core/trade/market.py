@@ -1,7 +1,7 @@
 import logging
 from collections import OrderedDict
 from datetime import datetime, time
-from time import sleep
+import asyncio
 
 from .constants import orders_book_cl
 from ..event import Event
@@ -103,13 +103,14 @@ class ChinaAMarket(Exchange):
         self.hq_client.connect_api()
 
         while self._active:
-            sleep(3)
+            await asyncio.sleep(3)
             # 交易时间检验
             if not await self.time_verification(db):
                 continue
 
             # 获取最新的订单
             async for order in self.query_orders_book(db):
+                logging.debug(f"获取到新的委托: {order}")
                 order = Order(**order)
                 # 订单验证
                 if not await self.on_back_verification(order):
@@ -123,8 +124,10 @@ class ChinaAMarket(Exchange):
         logging.info(f"{self.market_name}：模拟行情")
 
         while self._active:
+            await asyncio.sleep(3)
             # 获取最新的订单
             async for order in self.query_orders_book(db):
+                logging.debug(f"获取到新的委托: {order}")
                 order = Order(**order)
 
                 # 订单验证
@@ -165,6 +168,8 @@ class ChinaAMarket(Exchange):
 
             # 没有成交更新订单状态
             await self.on_orders_status_modify(order, db)
+        else:
+            logging.warning("取行情数据失败，请检查行情服务是否正常！")
 
     async def on_orders_deal(self, order: Order, db):
         """订单成交"""
@@ -261,6 +266,7 @@ class ChinaAMarket(Exchange):
     async def on_close(self, db):
         """模拟交易市场关闭"""
         # 阻止接收新订单
+        logging.info("交易市场关闭时间，关闭交易市场...")
         Settings.MARKET_NAME = ""
 
         # 关闭市场撮合

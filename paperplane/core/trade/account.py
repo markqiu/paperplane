@@ -214,7 +214,7 @@ async def on_orders_book_insert(order: Order, db):
     order.status = order.status.value
     result = await db[orders_book_cl].insert_one(order.dict())
     if result:
-        return True, await on_orders_insert(order, db)
+        return await on_orders_insert(order, db)
     else:
         return False, "订单薄新增订单失败"
 
@@ -295,10 +295,9 @@ async def on_position_insert(order: Order, cost: float, db):
         code=order.code,
         exchange=order.exchange,
         account_id=order.account_id,
-        buy_date=order.order_date,
         volume=order.traded,
         available=available,
-        buy_price=order.trade_price,
+        cost_price=order.trade_price,
         now_price=order.trade_price,
         profit=profit,
     )
