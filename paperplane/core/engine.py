@@ -28,8 +28,8 @@ class MainEngine:
         # TODO
 
         # 市场交易线程
-        event_loop = asyncio.get_event_loop()
-        self._thread = Thread(target=self._run, args=(event_loop,))
+        self._event_loop = asyncio.get_event_loop()
+        self._thread = Thread(target=self._run)
 
         # 注册事件监听
         self.event_register()
@@ -62,9 +62,9 @@ class MainEngine:
 
         return True
 
-    def _run(self, event_loop: asyncio.BaseEventLoop):
+    def _run(self):
         """订单薄撮合程序启动"""
-        asyncio.set_event_loop(event_loop)
+        asyncio.set_event_loop(self._event_loop)
         asyncio.ensure_future(self._market.on_match(self._db))
 
     def _close(self):
@@ -80,12 +80,14 @@ class MainEngine:
     def process_order_deal(self, event):
         """订单成交处理"""
         order = event.data
-        on_order_deal(order, self._db)
+        asyncio.set_event_loop(self._event_loop)
+        asyncio.ensure_future(on_order_deal(order, self._db))
 
     def process_order_rejected(self, event):
         """订单拒单处理"""
         order = event.data
-        on_order_cancel(order, self._db)
+        asyncio.set_event_loop(self._event_loop)
+        asyncio.ensure_future(on_order_cancel(order, self._db))
 
     def process_market_close(self, event):
         """市场关闭处理"""

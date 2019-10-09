@@ -103,7 +103,6 @@ class ChinaAMarket(Exchange):
         self.hq_client.connect_api()
 
         while self._active:
-            await asyncio.sleep(3)
             # 交易时间检验
             if not await self.time_verification(db):
                 continue
@@ -124,14 +123,13 @@ class ChinaAMarket(Exchange):
         logging.info(f"{self.market_name}：模拟行情")
 
         while self._active:
-            await asyncio.sleep(3)
             # 获取最新的订单
             async for order in self.query_orders_book(db):
                 logging.debug(f"获取到新的委托: {order}")
                 order = Order(**order)
 
                 # 订单验证
-                if not self.on_back_verification(order):
+                if not await self.on_back_verification(order):
                     await self.on_orders_book_delete(order, db)
                     continue
 
@@ -222,7 +220,7 @@ class ChinaAMarket(Exchange):
     async def on_back_verification(self, order: Order):
         """后端验证"""
         for k, verification in self.verification.items():
-            result, msg = verification(order)
+            result, msg = await verification(order)
 
             if not result:
                 order.status = Status.REJECTED.value

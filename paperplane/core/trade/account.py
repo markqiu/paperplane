@@ -314,9 +314,9 @@ async def on_position_update(order: Order, db):
 
 async def on_position_append(order: Order, db):
     """持仓增长"""
-    result, pos_o = await query_position_one(order.account_id, order.code, order.exchange, db)
+    pos_o = await query_position_one(order.account_id, order.code, order.exchange, db)
     cost = order.volume * order.trade_price * Settings.COST
-    if result:
+    if pos_o:
         volume = pos_o["volume"] + order.traded
         now_price = order.trade_price
         profit = (order.trade_price - pos_o["now_price"]) * pos_o["volume"] + pos_o["profit"] - cost

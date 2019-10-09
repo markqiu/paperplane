@@ -37,7 +37,7 @@ class EventEngine:
     which can be used for timing purpose.
     """
 
-    def __init__(self, interval: int = 1):
+    def __init__(self, interval: float = 0.001):
         """
         Timer event is generated every 1 second by default, if
         interval not specified.
@@ -45,7 +45,7 @@ class EventEngine:
         self._interval = interval
         self._queue = Queue()
         self._active = False
-        self._thread = Thread(target=self._run)
+        self._thread = Thread(target=self._run, name="Event Engine Timer")
         self._timer = Thread(target=self._run_timer)
         self._handlers = defaultdict(list)
         self._general_handlers = []

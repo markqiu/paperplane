@@ -15,7 +15,6 @@ def test_client():
         yield test_client, Settings.API_KEY_NAME, Settings.API_KEY.get_secret_value()  # 返回 testclient, api_key_name, api_key
         db = get_database()
         db[account_cl].delete_many({})
-        del app
 
 
 @pytest.fixture(scope="session")

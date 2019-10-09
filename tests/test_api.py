@@ -1,5 +1,6 @@
 import ujson
 import asyncio
+from time import sleep
 from paperplane.db.client.mongodb import get_database
 from paperplane.core.trade.constants import trade_cl, orders_book_cl, account_cl
 
@@ -89,10 +90,10 @@ def test_pos_query(test_client, test_account):
     result = test_client[0].post(f"order/new?{test_client[1]}={test_client[2]}", json=json[0])
     assert result.status_code == 200
     assert result.json()[0] is True
-
+    sleep(1)
     result = test_client[0].get(f"pos/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
     assert result.status_code == 200
-    assert result.json() == []
+    assert len(result.json()) == 1
     test_client[0].delete(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
 
 

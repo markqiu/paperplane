@@ -135,5 +135,5 @@ async def order_get_status(order_id: str = Path(...), api_key: APIKey = Depends(
 @router.get("/liquidation/{account_id}", response_model=bool)
 async def liquidation_trigger(account_id: str = Path(...), api_key: APIKey = Depends(get_api_key), db_client: AsyncIOMotorDatabase = Depends(get_database)):
     """清算"""
-    if is_account_exist(account_id, db_client):
+    if await is_account_exist(account_id, db_client):
         return await on_liquidation(account_id, db_client)
