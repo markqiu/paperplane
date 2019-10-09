@@ -13,8 +13,6 @@ class SettingsModel(BaseSettings):
     JWT_TOKEN_PREFIX: str = "Token"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # one week
 
-    MAX_CONNECTIONS_COUNT: int
-    MIN_CONNECTIONS_COUNT: int
     SECRET_KEY: str
     API_KEY_NAME: str
     API_KEY: SecretStr = Schema(..., min_length=16)
@@ -29,6 +27,7 @@ class SettingsModel(BaseSettings):
     MONGO_USER: str
     MONGO_PASS: str
     MONGO_AUTHDB: str
+    MONGODB_maxPoolSize: int = Schema(100, description="mongo的最大连接数，缺省值为100，当服务器访问量非常大时可以调大或者设成0取消限制")
     SITE_CONFIGS_COLLECTION_NAME: str
 
     CLIENT_API_KEY: str = Schema(None, description="暂时使用的clientid，用于获取调用api权限的凭证")
