@@ -72,7 +72,7 @@ class ChinaAMarket(Exchange):
         Settings.MARKET_NAME = self.market_name
 
         # 注册验证程序
-        if self.match_mode == EngineMode.REALTIME.value:
+        if self.match_mode == EngineMode.REALTIME:
             self.verification = {"1": self.product_verification, "2": self.price_verification}
         else:
             self.verification = {"1": self.product_verification}
@@ -85,7 +85,7 @@ class ChinaAMarket(Exchange):
         logging.info(f"{self.market_name}：交易市场已开启")
 
         try:
-            if self.match_mode == EngineMode.REALTIME.value:
+            if self.match_mode == EngineMode.REALTIME:
                 await self.on_realtime_match(db)
             else:
                 await self.on_simulation_match(db)
