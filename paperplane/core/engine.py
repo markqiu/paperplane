@@ -64,8 +64,7 @@ class MainEngine:
 
     def _run(self):
         """订单薄撮合程序启动"""
-        asyncio.set_event_loop(self._event_loop)
-        asyncio.ensure_future(self._market.on_match(self._db))
+        asyncio.run_coroutine_threadsafe(self._market.on_match(self._db), self._event_loop)
 
     def _close(self):
         """模拟交易引擎关闭"""
@@ -75,19 +74,20 @@ class MainEngine:
         # 关闭数据库
         self._dbclient.close()
 
+        # 关闭事件引擎
+        self.event_engine.stop()
+
         logging.info("模拟交易主引擎：关闭")
 
     def process_order_deal(self, event):
         """订单成交处理"""
         order = event.data
-        asyncio.set_event_loop(self._event_loop)
-        asyncio.ensure_future(on_order_deal(order, self._db))
+        asyncio.run_coroutine_threadsafe(on_order_deal(order, self._db), self._event_loop)
 
     def process_order_rejected(self, event):
         """订单拒单处理"""
         order = event.data
-        asyncio.set_event_loop(self._event_loop)
-        asyncio.ensure_future(on_order_cancel(order, self._db))
+        asyncio.run_coroutine_threadsafe(on_order_cancel(order, self._db), self._event_loop)
 
     def process_market_close(self, event):
         """市场关闭处理"""

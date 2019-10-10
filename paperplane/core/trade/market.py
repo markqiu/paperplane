@@ -257,7 +257,7 @@ class ChinaAMarket(Exchange):
         else:
             return False, "交易品种不符"
 
-    async def price_verification(order: Order):
+    async def price_verification(self, order: Order):
         """价格验证"""
         return True, ""
 

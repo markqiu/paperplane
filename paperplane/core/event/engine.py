@@ -97,8 +97,8 @@ class EventEngine:
         Stop event engine.
         """
         self._active = False
-        self._thread.join(3)
-        self._timer.join(3)
+        self._thread.join()
+        self._timer.join()
 
     def put(self, event: Event):
         """
