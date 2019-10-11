@@ -125,9 +125,9 @@ async def start_engine():
     me = MainEngine()
     # 开启模拟交易引擎
     if me.start():
-        logging.info("启动撮合引擎成功！")
+        logging.info("撮合引擎启动成功！")
     else:
-        logging.critical("启动撮合引擎失败！")
+        logging.critical("撮合引擎启动失败！")
 
 
 async def stop_engine():

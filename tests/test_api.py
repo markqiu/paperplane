@@ -3,12 +3,15 @@ import asyncio
 from time import sleep
 from paperplane.db.client.mongodb import get_database
 from paperplane.core.trade.constants import trade_cl, orders_book_cl, account_cl
+from paperplane.core.engine import stop_engine, start_engine
 
 
+# 测试系统启动
 def test_main_engine_start(test_client):
     assert test_client
 
 
+# 测试api_key的有效性
 def test_api_key(test_client, test_account):
     result = test_client[0].post(f"account", json=test_account)
     assert result.status_code == 200
@@ -19,6 +22,7 @@ def test_api_key(test_client, test_account):
     test_client[0].delete(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
 
 
+# 测试创建无持仓账户
 def test_create_acccount(test_client, test_account):
     result = test_client[0].post(f"account?{test_client[1]}={test_client[2]}", json=test_account)
     assert result.status_code == 200
@@ -30,6 +34,7 @@ def test_create_acccount(test_client, test_account):
     test_client[0].delete(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
 
 
+# 测试创建有持仓的账户
 def test_create_acccount_with_position(test_client, test_account_with_position):
     result = test_client[0].post(f"account?{test_client[1]}={test_client[2]}", json=test_account_with_position)
     assert result.status_code == 200
@@ -44,6 +49,7 @@ def test_create_acccount_with_position(test_client, test_account_with_position):
     test_client[0].delete(f"account/{test_account_with_position['account']['account_id']}?{test_client[1]}={test_client[2]}")
 
 
+# 测试删除账户
 def test_delete_acccount(test_client, test_account):
     test_client[0].post(f"account?{test_client[1]}={test_client[2]}", json=test_account)
     result = test_client[0].delete(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
@@ -54,8 +60,10 @@ def test_delete_acccount(test_client, test_account):
     assert not result.json()
 
 
+# 测试列出账户
 def test_list_acccount(test_client, test_account):
-    json = ujson.load(open("tests/fixtures/account.json"))
+    with open("tests/fixtures/account.json") as file:
+        json = ujson.load(file)
     db = get_database()
     asyncio.get_event_loop().run_until_complete(db[account_cl].insert_many(json))
     result = test_client[0].get(f"account/list?{test_client[1]}={test_client[2]}", json=test_account)
@@ -76,6 +84,7 @@ def test_list_acccount(test_client, test_account):
     asyncio.get_event_loop().run_until_complete(db[account_cl].delete_many({}))
 
 
+# 测试获取某账户信息
 def test_get_acccount(test_client, test_account):
     test_client[0].post(f"account?{test_client[1]}={test_client[2]}", json=test_account)
     result = test_client[0].get(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
@@ -84,8 +93,10 @@ def test_get_acccount(test_client, test_account):
     test_client[0].delete(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
 
 
+# 测试获取持仓
 def test_pos_query(test_client, test_account):
-    json = ujson.load(open("tests/fixtures/order.json"))
+    with open("tests/fixtures/order.json") as file:
+        json = ujson.load(file)
     test_client[0].post(f"account?{test_client[1]}={test_client[2]}", json=test_account)
     result = test_client[0].post(f"order/new?{test_client[1]}={test_client[2]}", json=json[0])
     assert result.status_code == 200
@@ -97,8 +108,10 @@ def test_pos_query(test_client, test_account):
     test_client[0].delete(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
 
 
+# 测试获取委托
 def test_order_query(test_client, test_account):
-    json = ujson.load(open("tests/fixtures/order.json"))
+    with open("tests/fixtures/order.json") as file:
+        json = ujson.load(file)
     db = get_database()
     asyncio.get_event_loop().run_until_complete(db[trade_cl].insert_many(json))
     asyncio.get_event_loop().run_until_complete(db[orders_book_cl].insert_many(json))
@@ -112,34 +125,44 @@ def test_order_query(test_client, test_account):
     asyncio.get_event_loop().run_until_complete(db[orders_book_cl].delete_many({}))
 
 
+# 测试下委托单
 def test_order_new(test_client, test_account):
-    json = ujson.load(open("tests/fixtures/order.json"))
+    with open("tests/fixtures/order.json") as file:
+        json = ujson.load(file)
     result = test_client[0].post(f"order/new?{test_client[1]}={test_client[2]}", json=json[0])
     assert result.status_code == 200
     assert result.json() == [False, "账户不存在"]
     test_client[0].post(f"account?{test_client[1]}={test_client[2]}", json=test_account)
     result = test_client[0].post(f"order/new?{test_client[1]}={test_client[2]}", json=json[0])
+    stop_engine()
     assert result.status_code == 200
-    assert result.json()[0] == True
+    assert result.json()[0] is True
     test_client[0].delete(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
+    start_engine()
 
 
+# 测试撤单
 def test_order_cancel(test_client, test_account):
-    json = ujson.load(open("tests/fixtures/order.json"))
+    with open("tests/fixtures/order.json") as file:
+        json = ujson.load(file)
+    test_client[0].post(f"account?{test_client[1]}={test_client[2]}", json=test_account)
+    stop_engine()
     db = get_database()
     asyncio.get_event_loop().run_until_complete(db[trade_cl].insert_many(json))
     asyncio.get_event_loop().run_until_complete(db[orders_book_cl].insert_many(json))
-    test_client[0].post(f"account?{test_client[1]}={test_client[2]}", json=test_account)
     result = test_client[0].delete(f"order/{json[1]['order_id']}?{test_client[1]}={test_client[2]}")
     assert result.status_code == 200
-    assert result.json() == True
+    assert result.json() is True
     test_client[0].delete(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
     asyncio.get_event_loop().run_until_complete(db[trade_cl].delete_many({}))
     asyncio.get_event_loop().run_until_complete(db[orders_book_cl].delete_many({}))
+    start_engine()
 
 
-def test_order_status_query(test_client, test_account):
-    json = ujson.load(open("tests/fixtures/order.json"))
+# 测试订单状态查询
+def test_order_status_query(test_client):
+    with open("tests/fixtures/order.json") as file:
+        json = ujson.load(file)
     db = get_database()
     asyncio.get_event_loop().run_until_complete(db[trade_cl].insert_many(json))
     asyncio.get_event_loop().run_until_complete(db[orders_book_cl].insert_many(json))
@@ -150,8 +173,10 @@ def test_order_status_query(test_client, test_account):
     asyncio.get_event_loop().run_until_complete(db[orders_book_cl].delete_many({}))
 
 
+# 测试清算
 def test_liquidation(test_client, test_account):
-    json = ujson.load(open("tests/fixtures/order.json"))
+    with open("tests/fixtures/order.json") as file:
+        json = ujson.load(file)
     db = get_database()
     asyncio.get_event_loop().run_until_complete(db[trade_cl].insert_many(json))
     asyncio.get_event_loop().run_until_complete(db[orders_book_cl].insert_many(json))

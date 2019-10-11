@@ -12,17 +12,10 @@ theme:
     tabs: true
 nav:
     - 首页: index.md
-    - 基本概念: concepts.md
-    - 如何使用:
-      - 使用步骤: usage/使用步骤.md
-      - 机器人的功能: usage/机器人的功能.md
-      - 模拟交易撮合规则: usage/模拟交易撮合规则.md
-      - 装备的分类及功能: usage/装备的分类及功能.md
-      - 严格的评估评级体系: usage/严格的评估评级体系.md
+    - 参数: settings.md
     - 接口说明:
       - 数据字典: sdk/数据字典.md
       - 接口定义: sdk/接口定义.md
-    - 服务器安装: install.md
     - 常见问题: FAQ.md
     - TODO: TODO.md
     - Changelog: changelog.md

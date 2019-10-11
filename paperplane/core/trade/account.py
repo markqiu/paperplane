@@ -135,7 +135,7 @@ async def on_orders_insert(order: Order, db):
         return False, f"交易表新增订单失败{e}"
 
 
-async def on_orders_exist(token: str, order_id: str, db):
+async def is_orders_exist(order_id: str, db):
     """查询订单是否存在"""
     result = await db[trade_cl].find_one({"order_id": order_id})
     if result:

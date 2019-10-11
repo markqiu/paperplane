@@ -2,7 +2,7 @@ import pytest
 import copy
 from starlette.testclient import TestClient
 from paperplane.db.client.mongodb import get_database
-from paperplane.core.trade.constants import account_cl
+from paperplane.core.trade.constants import account_cl, trade_cl, position_cl, orders_book_cl
 from paperplane.core.settings import Settings
 
 
@@ -15,6 +15,9 @@ def test_client():
         yield test_client, Settings.API_KEY_NAME, Settings.API_KEY.get_secret_value()  # 返回 testclient, api_key_name, api_key
         db = get_database()
         db[account_cl].delete_many({})
+        db[trade_cl].delete_many({})
+        db[orders_book_cl].delete_many({})
+        db[position_cl].delete_many({})
 
 
 @pytest.fixture(scope="session")
