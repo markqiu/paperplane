@@ -47,7 +47,7 @@ def test_query_account_one(test_client):
 
 def test_on_orders_arrived(test_client):
     """订单到达"""
-    pytest.skip()
+    from paperplane.core.trade.account import on_orders_arrived
 
 
 def test_on_orders_insert(test_client):

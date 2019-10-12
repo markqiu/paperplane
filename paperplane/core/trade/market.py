@@ -56,7 +56,7 @@ class ChinaAMarket(Exchange):
     def __init__(self, event_engine):
         super(ChinaAMarket, self).__init__(event_engine)
 
-        self.market_name = "china_a_market"  # 交易市场名称
+        self.market_name = Settings.MARKET_NAME  # 交易市场名称
         self._active = False
         self.hq_client = TushareService()  # 行情源
         self.exchange_symbols = ["SH", "SZ"]  # 交易市场标识

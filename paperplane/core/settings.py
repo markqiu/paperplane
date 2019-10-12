@@ -1,7 +1,7 @@
 from typing import Set
 
 from dotenv import load_dotenv
-from pydantic import BaseSettings, Schema, SecretStr
+from pydantic import BaseSettings, Schema, SecretStr, IPvAnyAddress, PositiveInt, constr
 from pydantic.error_wrappers import ValidationError
 
 from ..models.constant import EngineMode
@@ -34,9 +34,8 @@ class SettingsModel(BaseSettings):
     CLIENT_ID: str = Schema(None, description="暂时使用的clientid，用于获取调用api权限的凭证")
     SERVER_DOMAIN: str = Schema(None, description="服务器的domain，用于设置cookie")
 
-    # 账户token长度
-    TOKEN_LENGTH = 20
-
+    # 市场参数
+    MARKET_NAME: constr(regex=r"^\w\w+") = Schema("china_a_market", description="市场名称")
     # 数据精确度
     POINT = 2
 
@@ -50,37 +49,29 @@ class SettingsModel(BaseSettings):
     # TODO 暂时没有实现相关功能
     VOLUME_SIMULATION: bool
 
-    # 是否开启账户与持仓信息的验证
-    VERIFICATION: bool
+    VERIFICATION: bool = Schema(True, description="是否开启账户与持仓信息的验证")
 
     # 引擎撮合速度（秒）
     # 引擎模式为SIMULATION下时，此参数失效
     # 设置此参数时请参考行情的刷新速度
     PERIOD: int = 3
 
-    # 报告功能开关参数
-    REPORT_MODE: bool
-
-    # mongoDB 参数
-    ACCOUNT_DB = "pt_account"
-    POSITION_DB = "pt_position"
-    TRADE_DB = "pt_trade"
-    ORDERS_BOOK = "pt_orders_book"
-    MARKET_NAME = ""
-    REPORT = "pt_report"
+    # 报告功能
+    REPORT_FLAG: bool = Schema(True, description="报告功能开关参数")
+    REPORT_NAME: str = Schema("pt_report", description="报告名称")
 
     # tushare行情源参数
     TUSHARE_TOKEN = "34467743d1e895f3e48b884958b379b1f1f58eae3b4511f48383ba0a"
 
     # pytdx行情参数
-    TDX_HOST = "114.80.63.5"
-    TDX_PORT = 7709
+    TDX_HOST: IPvAnyAddress = "114.80.63.5"
+    TDX_PORT: PositiveInt = 7709
 
     # 账户初始参数
-    ASSETS = 1000000.00  # 初始资金
-    COST = 0.0003  # 交易佣金
-    TAX = 0.001  # 印花税
-    SLIPPING = 0.01  # 滑点 暂未实现
+    ASSETS: float = 1000000.00  # 初始资金
+    COST: float = 0.0003  # 交易佣金
+    TAX: float = 0.001  # 印花税
+    SLIPPING: float = 0.01  # 滑点 暂未实现
 
     class Config:
         env_prefix = ""
