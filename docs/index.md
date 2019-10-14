@@ -10,7 +10,9 @@ creat your own paper trading server
 
 ### 安装mongodb
 
-安装好之后将mongodb服务开启
+1. 安装mongodb 4.2以上版本，且需要打开replica set（因为需要使用最新的session和transaction功能）。
+2. 安装好mongo数据库后，建立在配置文件中配置的的数据库和数据用户，并给与dbOwner的权限
+3. 之后将mongodb服务开启
 
 ### 安装依赖包
 ```bash

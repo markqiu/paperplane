@@ -1,5 +1,5 @@
 import time
-
+import logging
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from typing import List
 from .constants import account_cl, orders_book_cl, position_cl, trade_cl
@@ -29,14 +29,15 @@ async def is_account_exist(account_id: str, db: AsyncIOMotorDatabase):
 async def delete_account(account_id: str, db: AsyncIOMotorDatabase):
     """账户删除"""
     try:
-        with db.client.start_session() as session:
-            with session.start_transaction():
+        async with await db.client.start_session() as session:
+            async with session.start_transaction():
                 await db[orders_book_cl].delete_many({"account_id": account_id}, session=session)
                 await db[account_cl].delete_many({"account_id": account_id}, session=session)
                 await db[position_cl].delete_many({"account_id": account_id}, session=session)
                 await db[trade_cl].delete_many({"account_id": account_id}, session=session)
                 return True
-    except BaseException:
+    except Exception:
+        logging.error("删除账户发生错误，请检查!", exc_info=True)
         return False
 
 
