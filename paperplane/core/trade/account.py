@@ -10,14 +10,14 @@ from ...models.model import AccountNew, AccountInDB, PositionNew, PositionInDB, 
 """账户操作"""
 
 
-async def create_account(account: AccountNew, db:AsyncIOMotorDatabase) -> str:
+async def create_account(account: AccountNew, db: AsyncIOMotorDatabase) -> str:
     """创建账户"""
     account = AccountInDB(**account.dict(), assets=account.market_value + account.available)
     result = await db[account_cl].insert_one(account.dict())
     return str(result.inserted_id)
 
 
-async def is_account_exist(account_id: str, db:AsyncIOMotorDatabase):
+async def is_account_exist(account_id: str, db: AsyncIOMotorDatabase):
     """账户是否存在"""
     account = await query_account_one(account_id, db)
     if account:
@@ -40,7 +40,7 @@ async def delete_account(account_id: str, db: AsyncIOMotorDatabase):
         return False
 
 
-async def update_account(order: Order, db:AsyncIOMotorDatabase):
+async def update_account(order: Order, db: AsyncIOMotorDatabase):
     """订单成交后的账户操作"""
     account = await query_account_one(order.account_id, db)
     pos_val = await query_position_value(order.account_id, db)
@@ -51,7 +51,7 @@ async def update_account(order: Order, db:AsyncIOMotorDatabase):
         await on_account_sell(account, order, pos_val, db)
 
 
-async def on_account_buy(account: dict, order: Order, pos_val: float, db:AsyncIOMotorDatabase):
+async def on_account_buy(account: dict, order: Order, pos_val: float, db: AsyncIOMotorDatabase):
     """买入成交后账户操作"""
     frozen_all = account["assets"] - account["available"] - account["market_value"]
     frozen = (order.volume * order.order_price) * (1 + Settings.COST)
@@ -67,7 +67,7 @@ async def on_account_buy(account: dict, order: Order, pos_val: float, db:AsyncIO
     return result
 
 
-async def on_account_sell(account: dict, order: Order, pos_val: float, db:AsyncIOMotorDatabase):
+async def on_account_sell(account: dict, order: Order, pos_val: float, db: AsyncIOMotorDatabase):
     """卖出成交后账户操作"""
     frozen = account["assets"] - account["available"] - account["market_value"]
     order_val = order.traded * order.trade_price
@@ -83,7 +83,7 @@ async def on_account_sell(account: dict, order: Order, pos_val: float, db:AsyncI
     return result
 
 
-async def on_account_liquidation(account_id: str, db:AsyncIOMotorDatabase):
+async def on_account_liquidation(account_id: str, db: AsyncIOMotorDatabase):
     """账户清算"""
     account = await query_account_one(account_id, db)
     pos_val = await query_position_value(account_id, db)
@@ -99,14 +99,14 @@ async def on_account_liquidation(account_id: str, db:AsyncIOMotorDatabase):
     return result
 
 
-async def query_account_list(limit: int, skip: int, db:AsyncIOMotorDatabase):
+async def query_account_list(limit: int, skip: int, db: AsyncIOMotorDatabase):
     """查询账户列表"""
     cursor = db[account_cl].find({}, limit=limit, skip=skip)
     async for account in cursor:
         yield account
 
 
-async def query_account_one(account_id: str, db:AsyncIOMotorDatabase):
+async def query_account_one(account_id: str, db: AsyncIOMotorDatabase):
     """查询账户信息"""
     if account_id:
         return await db[account_cl].find_one({"account_id": account_id})
@@ -115,7 +115,7 @@ async def query_account_one(account_id: str, db:AsyncIOMotorDatabase):
 """订单操作"""
 
 
-async def on_orders_arrived(order: Order, db:AsyncIOMotorDatabase):
+async def on_orders_arrived(order: Order, db: AsyncIOMotorDatabase):
     """订单到达"""
     # 接收订单前的验证
     if Settings.VERIFICATION:
@@ -126,7 +126,7 @@ async def on_orders_arrived(order: Order, db:AsyncIOMotorDatabase):
     return await on_orders_book_insert(order, db)
 
 
-async def on_orders_insert(order: Order, db:AsyncIOMotorDatabase):
+async def on_orders_insert(order: Order, db: AsyncIOMotorDatabase):
     """订单插入"""
     account_id = order.account_id
     order.status = Status.NOTTRADED.value
@@ -137,7 +137,7 @@ async def on_orders_insert(order: Order, db:AsyncIOMotorDatabase):
         return False, f"交易表新增订单失败{e}"
 
 
-async def is_orders_exist(order_id: str, db:AsyncIOMotorDatabase):
+async def is_orders_exist(order_id: str, db: AsyncIOMotorDatabase):
     """查询订单是否存在"""
     result = await db[trade_cl].find_one({"order_id": order_id})
     if result:
@@ -146,7 +146,7 @@ async def is_orders_exist(order_id: str, db:AsyncIOMotorDatabase):
         return False
 
 
-async def on_order_update(order: Order, db:AsyncIOMotorDatabase):
+async def on_order_update(order: Order, db: AsyncIOMotorDatabase):
     """订单状态更新"""
     result, order_old = await query_order_one(order.order_id, db)
     result = await db[trade_cl].update_many(
@@ -167,7 +167,7 @@ async def on_order_update(order: Order, db:AsyncIOMotorDatabase):
         return False
 
 
-async def on_order_deal(order: Order, db:AsyncIOMotorDatabase):
+async def on_order_deal(order: Order, db: AsyncIOMotorDatabase):
     """订单成交处理"""
     # 持仓处理
     await on_position_update(order, db)
@@ -183,7 +183,7 @@ async def on_order_deal(order: Order, db:AsyncIOMotorDatabase):
     await on_order_update(order, db)
 
 
-async def query_order_status(order_id: str, db:AsyncIOMotorDatabase):
+async def query_order_status(order_id: str, db: AsyncIOMotorDatabase):
     """查询订单情况"""
     order = await db[trade_cl].find_one({"order_id": order_id})
     if order:
@@ -192,13 +192,13 @@ async def query_order_status(order_id: str, db:AsyncIOMotorDatabase):
         return False, "无此订单"
 
 
-async def query_orders(account_id: str, limit: int, skip: int, db:AsyncIOMotorDatabase):
+async def query_orders(account_id: str, limit: int, skip: int, db: AsyncIOMotorDatabase):
     """查询交割单"""
     async for order in db[trade_cl].find({"account_id": account_id}, limit=limit, skip=skip):
         yield order
 
 
-async def query_order_one(order_id: str, db:AsyncIOMotorDatabase):
+async def query_order_one(order_id: str, db: AsyncIOMotorDatabase):
     """查询一条订单数据"""
     order = await db[trade_cl].find_one({"order_id": order_id})
     if order:
@@ -210,7 +210,7 @@ async def query_order_one(order_id: str, db:AsyncIOMotorDatabase):
 """订单薄操作"""
 
 
-async def on_orders_book_insert(order: Order, db:AsyncIOMotorDatabase):
+async def on_orders_book_insert(order: Order, db: AsyncIOMotorDatabase):
     """订单薄插入订单"""
     order.order_id = str(time.time())
     order.status = order.status.value
@@ -221,7 +221,7 @@ async def on_orders_book_insert(order: Order, db:AsyncIOMotorDatabase):
         return False, "订单薄新增订单失败"
 
 
-async def on_orders_book_cancel(order_id: str, db:AsyncIOMotorDatabase):
+async def on_orders_book_cancel(order_id: str, db: AsyncIOMotorDatabase):
     """订单撤单"""
     result = await db[orders_book_cl].delete_one({"order_id": order_id})
     if result.deleted_count:
@@ -238,26 +238,26 @@ async def on_orders_book_cancel(order_id: str, db:AsyncIOMotorDatabase):
 """持仓操作"""
 
 
-async def query_position(account_id: str, limit: int, skip: int, db:AsyncIOMotorDatabase):
+async def query_position(account_id: str, limit: int, skip: int, db: AsyncIOMotorDatabase):
     """查询所有持仓信息"""
     async for pos in db[position_cl].find({"account_id": account_id}, limit=limit, skip=skip):
         yield pos
 
 
-async def query_position_one(account_id: str, symbol: str, exchange: str, db:AsyncIOMotorDatabase):
+async def query_position_one(account_id: str, symbol: str, exchange: str, db: AsyncIOMotorDatabase):
     """查询某一只证券的持仓"""
     return await db[position_cl].find_one({"account_id": account_id, "code": symbol, "exchange": exchange})
 
 
-async def query_position_value(account_id: str, db:AsyncIOMotorDatabase):
+async def query_position_value(account_id: str, db: AsyncIOMotorDatabase):
     """查询账户市值"""
     value = 0
-    async for pos in query_position(account_id, 0, 0, db:AsyncIOMotorDatabase):
+    async for pos in query_position(account_id, 0, 0, db):
         value += pos["volume"] * pos["now_price"]
     return value
 
 
-async def on_position_init(account_id: str, pos_list: List[PositionNew], db:AsyncIOMotorDatabase):
+async def on_position_init(account_id: str, pos_list: List[PositionNew], db: AsyncIOMotorDatabase):
     """初始持仓创建"""
     from ...core.engine import me
 
@@ -286,7 +286,7 @@ async def on_position_init(account_id: str, pos_list: List[PositionNew], db:Asyn
     return await db[position_cl].insert_many(pos_list_to_db)
 
 
-async def on_position_insert(order: Order, cost: float, db:AsyncIOMotorDatabase):
+async def on_position_insert(order: Order, cost: float, db: AsyncIOMotorDatabase):
     """持仓增加"""
     profit = cost * -1
     available = order.traded
@@ -306,7 +306,7 @@ async def on_position_insert(order: Order, cost: float, db:AsyncIOMotorDatabase)
     return await db[position_cl].insert_one(pos.dict())
 
 
-async def on_position_update(order: Order, db:AsyncIOMotorDatabase):
+async def on_position_update(order: Order, db: AsyncIOMotorDatabase):
     """订单成交后持仓操作"""
     if order.order_type == OrderType.BUY.value:
         await on_position_append(order, db)
@@ -314,7 +314,7 @@ async def on_position_update(order: Order, db:AsyncIOMotorDatabase):
         await on_position_reduce(order, db)
 
 
-async def on_position_append(order: Order, db:AsyncIOMotorDatabase):
+async def on_position_append(order: Order, db: AsyncIOMotorDatabase):
     """持仓增长"""
     pos_o = await query_position_one(order.account_id, order.code, order.exchange, db)
     cost = order.volume * order.trade_price * Settings.COST
@@ -345,7 +345,7 @@ async def on_position_append(order: Order, db:AsyncIOMotorDatabase):
         return await on_position_insert(order, cost, db)
 
 
-async def on_position_reduce(order: Order, db:AsyncIOMotorDatabase):
+async def on_position_reduce(order: Order, db: AsyncIOMotorDatabase):
     """持仓减少"""
     result, pos_o = await query_position_one(order.account_id, order.code, order.exchange, db)
     volume = pos_o["volume"] - order.volume
@@ -360,11 +360,11 @@ async def on_position_reduce(order: Order, db:AsyncIOMotorDatabase):
     )
 
 
-async def on_position_liquidation(account_id, db:AsyncIOMotorDatabase):
+async def on_position_liquidation(account_id, db: AsyncIOMotorDatabase):
     """持仓清算"""
     from ...core.engine import me
 
-    async for pos in query_position(account_id, 0, 0, db:AsyncIOMotorDatabase):
+    async for pos in query_position(account_id, 0, 0, db):
         hq = me._market.hq_client.get_realtime_data(f"{pos['code']}.{pos['exchange']}")
         if hq is not None:
             now_price = float(hq.loc[0, "price"])
@@ -374,7 +374,7 @@ async def on_position_liquidation(account_id, db:AsyncIOMotorDatabase):
         await on_position_frozen_cancel(account_id, pos, db)
 
 
-async def on_position_update_price(pos: dict, price: float, db:AsyncIOMotorDatabase):
+async def on_position_update_price(pos: dict, price: float, db: AsyncIOMotorDatabase):
     """更新持仓价格并解除冻结"""
     volume = pos["volume"]
     if volume:
@@ -386,7 +386,7 @@ async def on_position_update_price(pos: dict, price: float, db:AsyncIOMotorDatab
         )
 
 
-async def on_position_frozen_cancel(account_id: str, pos: dict, db:AsyncIOMotorDatabase):
+async def on_position_frozen_cancel(account_id: str, pos: dict, db: AsyncIOMotorDatabase):
     """持仓解除冻结"""
     volume = pos["volume"]
     if volume:
@@ -396,14 +396,14 @@ async def on_position_frozen_cancel(account_id: str, pos: dict, db:AsyncIOMotorD
 """验证操作"""
 
 
-async def on_front_verification(order: Order, db:AsyncIOMotorDatabase):
+async def on_front_verification(order: Order, db: AsyncIOMotorDatabase):
     """订单前置验证"""
     # 验证市场是否开启
     if not Settings.MARKET_NAME:
         return False, "交易市场关闭"
 
     # 验证账户是否存在
-    if not await is_account_exist(order.account_id, db:AsyncIOMotorDatabase):
+    if not await is_account_exist(order.account_id, db):
         return False, "账户不存在"
 
     if order.order_type == OrderType.BUY.value:
@@ -412,7 +412,7 @@ async def on_front_verification(order: Order, db:AsyncIOMotorDatabase):
         return await position_verification(order, db)
 
 
-async def account_verification(order: Order, db:AsyncIOMotorDatabase):
+async def account_verification(order: Order, db: AsyncIOMotorDatabase):
     """订单账户验证"""
     money_need = order.volume * order.order_price * (1 + Settings.COST)
     account = await query_account_one(order.account_id, db)
@@ -424,7 +424,7 @@ async def account_verification(order: Order, db:AsyncIOMotorDatabase):
         return False, "账户资金不足"
 
 
-async def position_verification(order: Order, db:AsyncIOMotorDatabase):
+async def position_verification(order: Order, db: AsyncIOMotorDatabase):
     """订单持仓验证"""
     pos_need = order.volume
     result, pos = await query_position_one(order.account_id, order.code, order.exchange, db)
@@ -439,13 +439,13 @@ async def position_verification(order: Order, db:AsyncIOMotorDatabase):
         return False, "无可用持仓"
 
 
-async def on_buy_frozen(account, pay: float, db:AsyncIOMotorDatabase):
+async def on_buy_frozen(account, pay: float, db: AsyncIOMotorDatabase):
     """买入资金冻结"""
     available = account["available"] - pay
     return await db[account_cl].update_one({"account_id": account["account_id"]}, {"$set": {"available": available}})
 
 
-async def on_sell_frozen(pos, vol: float, db:AsyncIOMotorDatabase):
+async def on_sell_frozen(pos, vol: float, db: AsyncIOMotorDatabase):
     """卖出证券冻结"""
     available = pos["available"] - vol
     return await db[position_cl].update_one(
@@ -453,7 +453,7 @@ async def on_sell_frozen(pos, vol: float, db:AsyncIOMotorDatabase):
     )
 
 
-async def on_order_cancel(order: Order, db:AsyncIOMotorDatabase):
+async def on_order_cancel(order: Order, db: AsyncIOMotorDatabase):
     """取消订单或订单被拒单操作"""
     await on_order_update(order, db)
 
@@ -463,7 +463,7 @@ async def on_order_cancel(order: Order, db:AsyncIOMotorDatabase):
         return await on_sell_cancel(order, db)
 
 
-async def on_buy_cancel(order: Order, db:AsyncIOMotorDatabase):
+async def on_buy_cancel(order: Order, db: AsyncIOMotorDatabase):
     """买入订单取消"""
     pay = (order.volume - order.traded) * order.order_price * (1 + Settings.COST)
     account = await query_account_one(order.account_id, db)
@@ -471,7 +471,7 @@ async def on_buy_cancel(order: Order, db:AsyncIOMotorDatabase):
     return await db[account_cl].update_one({"account_id": account["account_id"]}, {"$set": {"available": available}})
 
 
-async def on_sell_cancel(order: Order, db:AsyncIOMotorDatabase):
+async def on_sell_cancel(order: Order, db: AsyncIOMotorDatabase):
     """卖出取消"""
     result, pos = await query_position_one(order.account_id, order.code, order.exchange, db)
     available = pos["available"] + order.volume - order.traded
