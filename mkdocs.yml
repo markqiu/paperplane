@@ -13,6 +13,7 @@ theme:
 nav:
     - 首页: readme.md
     - 参数: settings.md
+    - 撮合逻辑图: matchmaking_tradeoff_logic.jpg
     - 接口说明:
       - 数据字典: sdk/数据字典.md
       - 接口定义: sdk/接口定义.md
