@@ -20,26 +20,37 @@ def test_delete_account(test_client):
 
 def test_update_account(test_client):
     """订单成交后账户操作"""
+    # 买入测试
+    # 卖出测试
+    # 买入不成交测试
+    # 卖出不成交测试
+    # 买入后撤单测试
+    # 卖出后撤单测试
 
 
 def test_on_account_buy(test_client):
     """买入成交后账户操作"""
+    pytest.skip()
 
 
 def test_on_account_sell(test_client):
     """卖出成交后账户操作"""
+    pytest.skip()
 
 
 def test_on_account_liquidation(test_client):
     """账户清算"""
+    pytest.skip()
 
 
 def test_query_account_list(test_client):
     """查询账户列表"""
+    pytest.skip()
 
 
 def test_query_account_one(test_client):
     """查询账户信息"""
+    pytest.skip()
 
 
 """订单操作"""
@@ -48,6 +59,8 @@ def test_query_account_one(test_client):
 def test_on_orders_arrived(test_client):
     """订单到达"""
     from paperplane.core.trade.account import on_orders_arrived
+
+    pytest.skip()
 
 
 def test_on_orders_insert(test_client):

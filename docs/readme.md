@@ -4,6 +4,12 @@ creat your own paper trading server
 
 ## 安装环境
 
+### 基本环境需求
+1. OS:
+linux操作系统
+2. python >=3.7
+3. mongodb >=4.2
+
 ### 安装Python
 
 至少Python3.7以上

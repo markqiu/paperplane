@@ -52,33 +52,33 @@ async def update_account(order: Order, db: AsyncIOMotorDatabase):
         await on_account_sell(account, order, pos_val, db)
 
 
-async def on_account_buy(account: dict, order: Order, pos_val: float, db: AsyncIOMotorDatabase):
+async def on_account_buy(account: AccountInDB, order: Order, pos_val: float, db: AsyncIOMotorDatabase):
     """买入成交后账户操作"""
-    frozen_all = account["assets"] - account["available"] - account["market_value"]
+    frozen_all = account.assets - account.available - account.market_value
     frozen = (order.volume * order.order_price) * (1 + Settings.COST)
     pay = (order.traded * order.trade_price) * (1 + Settings.COST)
 
-    available = account["available"] + frozen - pay
+    available = account.available + frozen - pay
     frozen_all = frozen_all - frozen
     assets = available + pos_val + frozen_all
     result = await db[account_cl].update_one(
-        {"account_id": account["account_id"]},
+        {"account_id": account.account_id},
         {"$set": {"available": round(available, Settings.POINT), "assets": round(assets, Settings.POINT), "market_value": round(pos_val, Settings.POINT)}},
     )
     return result
 
 
-async def on_account_sell(account: dict, order: Order, pos_val: float, db: AsyncIOMotorDatabase):
+async def on_account_sell(account: AccountInDB, order: Order, pos_val: float, db: AsyncIOMotorDatabase):
     """卖出成交后账户操作"""
-    frozen = account["assets"] - account["available"] - account["market_value"]
+    frozen = account.assets - account.available - account.market_value
     order_val = order.traded * order.trade_price
     cost = order_val * Settings.COST
     tax = order_val * Settings.TAX
-    available = account["available"] + order_val - cost - tax
+    available = account.available + order_val - cost - tax
     assets = available + pos_val + frozen
 
     result = await db[account_cl].update_one(
-        {"account_id": account["account_id"]},
+        {"account_id": account.account_id},
         {"$set": {"available": round(available, Settings.POINT), "assets": round(assets, Settings.POINT), "market_value": round(pos_val, Settings.POINT)}},
     )
     return result
@@ -90,11 +90,11 @@ async def on_account_liquidation(account_id: str, db: AsyncIOMotorDatabase):
     pos_val = await query_position_value(account_id, db)
 
     # 解除冻结
-    available = account["assets"] - account["market_value"]
+    available = account.assets - account.market_value
     assets = available + pos_val
 
     result = await db[account_cl].update_one(
-        {"account_id": account["account_id"]},
+        {"account_id": account.account_id},
         {"$set": {"available": round(available, Settings.POINT), "assets": round(assets, Settings.POINT), "market_value": round(pos_val, Settings.POINT)}},
     )
     return result
@@ -107,10 +107,13 @@ async def query_account_list(limit: int, skip: int, db: AsyncIOMotorDatabase):
         yield account
 
 
-async def query_account_one(account_id: str, db: AsyncIOMotorDatabase):
+async def query_account_one(account_id: str, db: AsyncIOMotorDatabase) -> AccountInDB:
     """查询账户信息"""
     if account_id:
-        return await db[account_cl].find_one({"account_id": account_id})
+        account_dict = await db[account_cl].find_one({"account_id": account_id})
+        return AccountInDB(**account_dict) if account_dict else None
+    else:
+        raise ValueError("account_id不能为空")
 
 
 """订单操作"""
@@ -169,7 +172,7 @@ async def on_order_update(order: Order, db: AsyncIOMotorDatabase):
 
 
 async def on_order_deal(order: Order, db: AsyncIOMotorDatabase):
-    """订单成交处理"""
+    """订单成交事件总入口，订单成交处理"""
     # 持仓处理
     await on_position_update(order, db)
 
@@ -260,7 +263,7 @@ async def query_position_value(account_id: str, db: AsyncIOMotorDatabase):
 
 async def on_position_init(account_id: str, pos_list: List[PositionNew], db: AsyncIOMotorDatabase):
     """初始持仓创建"""
-    from ...core.engine import me
+    from paperplane.core.event.manager import me
 
     pos_list_to_db = []
     for pos in pos_list:
@@ -363,7 +366,7 @@ async def on_position_reduce(order: Order, db: AsyncIOMotorDatabase):
 
 async def on_position_liquidation(account_id, db: AsyncIOMotorDatabase):
     """持仓清算"""
-    from ...core.engine import me
+    from paperplane.core.event.manager import me
 
     async for pos in query_position(account_id, 0, 0, db):
         hq = me._market.hq_client.get_realtime_data(f"{pos['code']}.{pos['exchange']}")
@@ -418,7 +421,7 @@ async def account_verification(order: Order, db: AsyncIOMotorDatabase):
     money_need = order.volume * order.order_price * (1 + Settings.COST)
     account = await query_account_one(order.account_id, db)
 
-    if account["available"] >= money_need:
+    if account.available >= money_need:
         await on_buy_frozen(account, money_need, db)
         return True, ""
     else:
@@ -440,10 +443,10 @@ async def position_verification(order: Order, db: AsyncIOMotorDatabase):
         return False, "无可用持仓"
 
 
-async def on_buy_frozen(account, pay: float, db: AsyncIOMotorDatabase):
+async def on_buy_frozen(account: AccountInDB, pay: float, db: AsyncIOMotorDatabase):
     """买入资金冻结"""
-    available = account["available"] - pay
-    return await db[account_cl].update_one({"account_id": account["account_id"]}, {"$set": {"available": available}})
+    available = account.available - pay
+    return await db[account_cl].update_one({"account_id": account.account_id}, {"$set": {"available": available}})
 
 
 async def on_sell_frozen(pos, vol: float, db: AsyncIOMotorDatabase):
@@ -468,8 +471,8 @@ async def on_buy_cancel(order: Order, db: AsyncIOMotorDatabase):
     """买入订单取消"""
     pay = (order.volume - order.traded) * order.order_price * (1 + Settings.COST)
     account = await query_account_one(order.account_id, db)
-    available = account["available"] + pay
-    return await db[account_cl].update_one({"account_id": account["account_id"]}, {"$set": {"available": available}})
+    available = account.available + pay
+    return await db[account_cl].update_one({"account_id": account.account_id}, {"$set": {"available": available}})
 
 
 async def on_sell_cancel(order: Order, db: AsyncIOMotorDatabase):

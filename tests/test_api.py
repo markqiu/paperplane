@@ -3,7 +3,7 @@ import asyncio
 from time import sleep
 from paperplane.db.client.mongodb import get_database
 from paperplane.core.trade.constants import trade_cl, orders_book_cl, account_cl
-from paperplane.core.engine import stop_engine, start_engine
+from paperplane.core.event.manager import stop_engine, start_engine
 
 
 # 测试系统启动
@@ -134,11 +134,11 @@ def test_order_new(test_client, test_account):
     assert result.json() == [False, "账户不存在"]
     test_client[0].post(f"account?{test_client[1]}={test_client[2]}", json=test_account)
     result = test_client[0].post(f"order/new?{test_client[1]}={test_client[2]}", json=json[0])
-    stop_engine()
+    asyncio.get_event_loop().run_until_complete(stop_engine())
     assert result.status_code == 200
     assert result.json()[0] is True
     test_client[0].delete(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
-    start_engine()
+    asyncio.get_event_loop().run_until_complete(start_engine())
 
 
 # 测试撤单
@@ -146,7 +146,7 @@ def test_order_cancel(test_client, test_account):
     with open("tests/fixtures/order.json") as file:
         json = ujson.load(file)
     test_client[0].post(f"account?{test_client[1]}={test_client[2]}", json=test_account)
-    stop_engine()
+    asyncio.get_event_loop().run_until_complete(stop_engine())
     db = get_database()
     asyncio.get_event_loop().run_until_complete(db[trade_cl].insert_many(json))
     asyncio.get_event_loop().run_until_complete(db[orders_book_cl].insert_many(json))
@@ -156,7 +156,7 @@ def test_order_cancel(test_client, test_account):
     test_client[0].delete(f"account/{test_account['account']['account_id']}?{test_client[1]}={test_client[2]}")
     asyncio.get_event_loop().run_until_complete(db[trade_cl].delete_many({}))
     asyncio.get_event_loop().run_until_complete(db[orders_book_cl].delete_many({}))
-    start_engine()
+    asyncio.get_event_loop().run_until_complete(start_engine())
 
 
 # 测试订单状态查询

@@ -167,7 +167,7 @@ class ChinaAMarket(Exchange):
             # 没有成交更新订单状态
             await self.on_orders_status_modify(order, db)
         else:
-            logging.warning("取行情数据失败，请检查行情服务是否正常！")
+            logging.warning(f"取行情数据{order.code}.{order.exchange}失败，请检查行情服务是否正常！")
 
     async def on_orders_deal(self, order: Order, db):
         """订单成交"""
@@ -191,6 +191,7 @@ class ChinaAMarket(Exchange):
 
     async def on_orders_book_delete(self, order: Order, db):
         """订单薄删除订单"""
+        logging.info(f"不符合要求的订单已删除：{Order}")
         return await db[orders_book_cl].delete_one({"order_id": order.order_id})
 
     async def on_orders_book_rejected_all(self, db):
@@ -208,7 +209,7 @@ class ChinaAMarket(Exchange):
             logging.info(f"处理订单：账户：{order.account_id}, 订单号：{order.order_id}, 结果：{order.error_msg}")
 
     async def on_orders_status_modify(self, order, db):
-        """更新订单状态"""
+        """更新未成交订单状态"""
         return await db[orders_book_cl].update_one({"order_id": order.order_id}, {"$set": {"status": Status.NOTTRADED.value}})
 
     async def query_orders_book(self, db, account_id: str = ""):

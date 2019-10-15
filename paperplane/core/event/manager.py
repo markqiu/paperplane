@@ -3,14 +3,14 @@ from abc import ABC
 from threading import Thread
 import asyncio
 
-from ..core.event import EventEngine
-from ..core.trade.account import on_order_deal, on_order_cancel
-from ..core.trade.market import Exchange, ChinaAMarket
-from ..db.client.mongodb import get_client, get_database
-from ..models.event import EVENT_ERROR, EVENT_MARKET_CLOSE, EVENT_ORDER_DEAL, EVENT_ORDER_REJECTED
+from paperplane.core.event import EventEngine
+from paperplane.core.trade.account import on_order_deal, on_order_cancel
+from paperplane.core.trade.market import Exchange, ChinaAMarket
+from paperplane.db.client.mongodb import get_client, get_database
+from paperplane.models.event import EVENT_ERROR, EVENT_MARKET_CLOSE, EVENT_ORDER_DEAL, EVENT_ORDER_REJECTED
 
 
-class MainEngine:
+class EventManager:
     """模拟交易主引擎"""
 
     def __init__(self, event_engine: EventEngine = None, market: Exchange = None):
@@ -122,7 +122,7 @@ me = None
 async def start_engine():
     global me
     # 初始化撮合引擎
-    me = MainEngine()
+    me = EventManager()
     # 开启模拟交易引擎
     if me.start():
         logging.info("撮合引擎启动成功！")

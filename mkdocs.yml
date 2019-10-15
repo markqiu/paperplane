@@ -11,7 +11,7 @@ theme:
   feature:
     tabs: true
 nav:
-    - 首页: index.md
+    - 首页: readme.md
     - 参数: settings.md
     - 接口说明:
       - 数据字典: sdk/数据字典.md

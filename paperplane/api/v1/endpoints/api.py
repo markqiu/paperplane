@@ -1,4 +1,4 @@
-from typing import AnyStr, List
+from typing import Union, List
 
 from fastapi import APIRouter, Body, Depends, Path, Query
 from fastapi.security.api_key import APIKey
@@ -68,20 +68,10 @@ async def account_list(
     return account_list
 
 
-@router.get("/account/{account_id}", response_model=AccountInDB)
-async def account_query(
-    account_id: str = Path(...),
-    limit: int = Query(20, ge=0, description="限制返回的条数，0=全部"),
-    skip: int = Query(0, ge=0),
-    api_key: APIKey = Depends(get_api_key),
-    db_client: AsyncIOMotorDatabase = Depends(get_database),
-):
+@router.get("/account/{account_id}", response_model=Union[AccountInDB, None])
+async def account_query(account_id: str = Path(...), api_key: APIKey = Depends(get_api_key), db_client: AsyncIOMotorDatabase = Depends(get_database)):
     """查询账户信息"""
-    result = await query_account_one(account_id, db_client)
-    if result:
-        return result
-    else:
-        raise HTTPException(status_code=200, detail=f"查无此账户{account_id}")
+    return await query_account_one(account_id, db_client)
 
 
 @router.get("/pos/{account_id}", response_model=List[PositionInDB])
