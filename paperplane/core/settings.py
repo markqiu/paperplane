@@ -1,7 +1,7 @@
 from typing import Set
 
 from dotenv import load_dotenv
-from pydantic import BaseSettings, Schema, SecretStr, IPvAnyAddress, PositiveInt, constr
+from pydantic import BaseSettings, Field, SecretStr, IPvAnyAddress, PositiveInt, constr
 from pydantic.error_wrappers import ValidationError
 
 from ..models.constant import EngineMode
@@ -15,9 +15,9 @@ class SettingsModel(BaseSettings):
 
     SECRET_KEY: str
     API_KEY_NAME: str
-    API_KEY: SecretStr = Schema(..., min_length=16)
+    API_KEY: SecretStr = Field(..., exclusiveMaximum=16)
 
-    SENTRY_DSN: str = Schema(None, description="如果需要和sentry打通，可以设置sentry dsn")
+    SENTRY_DSN: str = Field(None, description="如果需要和sentry打通，可以设置sentry dsn")
 
     ALLOWED_HOSTS: Set[str] = set()
 
@@ -27,15 +27,15 @@ class SettingsModel(BaseSettings):
     MONGO_USER: str
     MONGO_PASS: str
     MONGO_AUTHDB: str
-    MONGODB_maxPoolSize: int = Schema(100, description="mongo的最大连接数，缺省值为100，当服务器访问量非常大时可以调大或者设成0取消限制")
+    MONGODB_maxPoolSize: int = Field(100, description="mongo的最大连接数，缺省值为100，当服务器访问量非常大时可以调大或者设成0取消限制")
     SITE_CONFIGS_COLLECTION_NAME: str
 
-    CLIENT_API_KEY: str = Schema(None, description="暂时使用的clientid，用于获取调用api权限的凭证")
-    CLIENT_ID: str = Schema(None, description="暂时使用的clientid，用于获取调用api权限的凭证")
-    SERVER_DOMAIN: str = Schema(None, description="服务器的domain，用于设置cookie")
+    CLIENT_API_KEY: str = Field(None, description="暂时使用的clientid，用于获取调用api权限的凭证")
+    CLIENT_ID: str = Field(None, description="暂时使用的clientid，用于获取调用api权限的凭证")
+    SERVER_DOMAIN: str = Field(None, description="服务器的domain，用于设置cookie")
 
     # 市场参数
-    MARKET_NAME: constr(regex=r"^\w\w+") = Schema("china_a_market", description="市场名称")
+    MARKET_NAME: constr(regex=r"^\w\w+") = Field("china_a_market", description="市场名称")
     # 数据精确度
     POINT = 2
 
@@ -49,7 +49,7 @@ class SettingsModel(BaseSettings):
     # TODO 暂时没有实现相关功能
     VOLUME_SIMULATION: bool
 
-    VERIFICATION: bool = Schema(True, description="是否开启账户与持仓信息的验证")
+    VERIFICATION: bool = Field(True, description="是否开启账户与持仓信息的验证")
 
     # 引擎撮合速度（秒）
     # 引擎模式为SIMULATION下时，此参数失效
@@ -57,8 +57,8 @@ class SettingsModel(BaseSettings):
     PERIOD: int = 3
 
     # 报告功能
-    REPORT_FLAG: bool = Schema(True, description="报告功能开关参数")
-    REPORT_NAME: str = Schema("pt_report", description="报告名称")
+    REPORT_FLAG: bool = Field(True, description="报告功能开关参数")
+    REPORT_NAME: str = Field("pt_report", description="报告名称")
 
     # tushare行情源参数
     TUSHARE_TOKEN = "34467743d1e895f3e48b884958b379b1f1f58eae3b4511f48383ba0a"
